@@ -137,8 +137,8 @@ def donate(challengeid):
             if request.form.get('paybycard'):
                 print(request.form.get('paybycard'))
                 money = round((money * 1.029), 2)
-            webbrowser.open('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
-            return redirect(url_for('index'))
+            # webbrowser.open_new('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
+            return redirect('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
 
     return render_template('donate.html', challenge=challenge)
 
