@@ -1,0 +1,35 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.heading {
+    background: #090035;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+}
+
+.section {
+    width: 90%;
+    background: #e0e0e0;
+    padding: 20px;
+    margin: 50px auto;
+    -webkit-box-shadow: 10px 10px 20px 0 rgba(0,0,0,0.55);
+    -moz-box-shadow: 10px 10px 20px 0 rgba(0,0,0,0.55);
+    box-shadow: 10px 10px 20px 0 rgba(0,0,0,0.55);
+}
+
+.stat-element {
+    width: 250px;
+    padding: 20px;
+    margin: 20px;
+    background: #1f2833;
+    color: #45a29e;
+    border-radius: 5px;
+    font-size: 35px;
+}
