@@ -34,7 +34,9 @@
                     {{ render_field(field) }}
                 {% endfor %}
                 <br>
-                <button type="submit" class="btn btn-primary" style="margin-left: 20px">{{ function }}</button>
+                <a class="btn btn-info" href="https://wetransfer.com/?to=06gwaller@brightoncollege.net" target="_blank" style="">Upload video to WeTransfer</a>
+                <br>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px">{{ function }}</button>
             </form>
         </div>
 
@@ -48,5 +50,8 @@
             })
         </script>
 
+    {% endblock %}
+    {% block footer %}
+        {{ super() }}
     {% endblock %}
 {% endblock %}

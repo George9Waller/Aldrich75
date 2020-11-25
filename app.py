@@ -137,7 +137,7 @@ def donate(challengeid):
             if request.form.get('paybycard'):
                 print(request.form.get('paybycard'))
                 money = round((money * 1.029), 2)
-            webbrowser.open_new_tab('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
+            webbrowser.open_new('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
             return redirect(url_for('index'))
 
     return render_template('donate.html', challenge=challenge)
@@ -235,10 +235,14 @@ if __name__ == 'app':
     try:
         import users
 
-        for user in users.users:
+        for user in users.get_users():
             try:
-                models.Participant.create_participant(user[0], user[1])
-                print('creating Participant for:', user[0], user[1])
+                if user[2] == 'Preferred Name' or user[2] == '':
+                    pass
+                else:
+                    name = user[2] + ' ' + user[0]
+                    models.Participant.create_participant(name, user[4])
+                    print('creating Participant for:', name, user[4])
             except:
                 pass
     except ModuleNotFoundError:
