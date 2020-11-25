@@ -33,11 +33,11 @@ class NewChallenge(FlaskForm):
         ]
     )
 
-    MoneyRaised = DecimalField(
-        'Money Raised So Far',
-        validators=[],
-        default=0.00
-    )
+    # MoneyRaised = DecimalField(
+    #     'Money Raised So Far',
+    #     validators=[],
+    #     default=0.00
+    # )
 
 
 class EditChallenge(FlaskForm):

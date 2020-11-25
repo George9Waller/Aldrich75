@@ -21,12 +21,27 @@
             {{ super() }}
         {% endblock %}
 
-        <div class="section" style="top: 30%; position: relative; padding: 30px; margin: auto; width: 50%; max-width: 500px">
+        <div class="section" style="top: 10%; position: relative; padding: 30px; margin: auto; width: 50%; max-width: 500px">
             <p class="text-center"><i class="fas fa-flag-checkered"></i><b> {{ function }} Challenge</b></p>
             {% if function == 'Update' %}
                 <br>
                 <p>The previous participant was <b>{{ challenge.Participant.Name }}</b></p>
             {% endif %}
+
+            <div style="display: flex; flex-flow: row wrap; background: #1f2833; color: #45a29e; padding: 10px; border-radius: 5px">
+                <div>
+                    <p>1. Select your name</p>
+                </div>
+                <div>
+                    <p>2. Give the Challenge a title and a description (if you want)</p>
+                </div>
+                <div>
+                    <p>3. Upload a 10s video to WeTransfer saying what you are going to do</p>
+                </div>
+                <div>
+                    <p>4. Create the challenge</p>
+                </div>
+            </div>
 
             <form method="post" action="">
                 {{ form.hidden_tag() }}

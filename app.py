@@ -114,7 +114,7 @@ def create_challenge():
         flash('Challenge created', 'success')
         participant = models.Participant.get_participant_by_id(form.Participant.data)
 
-        models.Challenge.create_challenge(participant, form.Title.data, form.Description.data, form.MoneyRaised.data)
+        models.Challenge.create_challenge(participant, form.Title.data, form.Description.data)
         return redirect(url_for('index'))
 
     else:
