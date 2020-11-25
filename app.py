@@ -3,7 +3,6 @@ import datetime
 from decimal import Decimal
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
-import users
 import models
 import forms
 
@@ -200,9 +199,14 @@ if __name__ == 'app':
     app.run()
     models.initialise()
 
-    for user in users.users:
-        try:
-            models.Participant.create_participant(user[0], user[1])
-            print('creating Participant for:', user[0], user[1])
-        except:
-            pass
+    try:
+        import users
+
+        for user in users.users:
+            try:
+                models.Participant.create_participant(user[0], user[1])
+                print('creating Participant for:', user[0], user[1])
+            except:
+                pass
+    except ModuleNotFoundError:
+        pass
