@@ -1,6 +1,7 @@
 import os
 import datetime
 from decimal import Decimal
+import webbrowser
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
 import models
@@ -45,14 +46,38 @@ def index():
         if money >= 75:
             met_challenges += 1
 
+    startdate = datetime.date(2021, 1, 5)
+    enddate = datetime.date(2021, 3, 19)
+
     today = datetime.date.today()
-    future = datetime.date(2021, 1, 15)
-    days = future - today
+    if today < startdate:
+        days_text = 'Days until start'
+        future = startdate
+        days = future - today
+        colour = '#FFBF00'
+    else:
+        days_text = 'Days left'
+        future = enddate
+        days = future - today
+        colour = '##659D32'
 
     progress = int((total / 6000) * 100)
 
-    return render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
-                           authenticated=authenticated, challenges=challenges, progress=progress)
+    ordered_challenges = models.Challenge.select().order_by(models.Challenge.MoneyRaised.desc())
+    challenge1 = None
+    challenge2 = None
+    challenge3 = None
+
+    try:
+        challenge1 = ordered_challenges[0]
+        challenge2 = ordered_challenges[1]
+        challenge3 = ordered_challenges[2]
+    except:
+        pass
+
+    return render_template('index.html', total=total, met_challenges=met_challenges, days=days.days, days_colour=colour,
+                           days_text=days_text, authenticated=authenticated, challenges=challenges, progress=progress,
+                           challenge1=challenge1, challenge2=challenge2, challenge3=challenge3)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -109,6 +134,10 @@ def donate(challengeid):
         else:
             flash('Thank you for pledging to donate £{}'.format(money), 'success')
             challenge.update_money_raised_by(money)
+            if request.form.get('paybycard'):
+                print(request.form.get('paybycard'))
+                money = round((money * 1.029), 2)
+            webbrowser.open_new_tab('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
             return redirect(url_for('index'))
 
     return render_template('donate.html', challenge=challenge)
