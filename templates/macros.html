@@ -2,7 +2,7 @@
     <div class="field">
         {% if field.errors %}
             {% for error in field.errors %}
-                <div class="notification error">{{ error }}</div>
+                <div class="alert alert-warning">{{ error }}</div>
             {% endfor %}
         {% endif %}
         {% if field.widget.input_type != 'hidden' %}

@@ -24,7 +24,7 @@
             <div class="heading" style="height: 20%; padding: 20px">
                 <div style="padding-left: 10%; padding-top: 10px; position: absolute">
                     <p class="bold" style="font-size: 60px">Aldrich 75</p>
-                    <p style="font-weight: 400"><b>#my75</b> is a campaign to raise money for house charities...</p>
+                    <p style="font-weight: 400"><span style="font-weight: 500; font-size: 30px">#my75</span> is a campaign to raise money for <span style="border-bottom: solid 3px #dd7a34">Grassroots Suicide Prevention</span>, <span style="border-bottom: solid 3px #8dc558">Amaze</span> & <span style="border-bottom: solid 3px #3b4587">Buglife</span>...</p>
                 </div>
                 <div style="right: 10%; padding-top: 10px; position: absolute">
                     <img style="height: 100px" alt="Aldrich Logo" src="/static/img/Aldrich_logo.png">
@@ -33,11 +33,11 @@
         </header>
 
         <div class="progress" style="height: 40px">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%; height: 40px">£{{ total|int }} / £6000</div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%; height: 40px">£{{ total|int }} / £7500</div>
         </div>
 
         <div class="section">
-            <h2>Stats</h2>
+            <h2>Info</h2>
 
             {% if not authenticated %}
                 <div class="alert alert-primary">Please enter the password to view the fully featured page: <b><a href="{{ url_for('login') }}">login</a></b></div>
@@ -45,9 +45,33 @@
 
             <div style="display: flex; flex-flow: row wrap">
 
-                <div class="stat-element" style="background: purple; color: white">
-                    <p class="text-center"><b>Info</b></p>
-                    <p style="font-size: small; margin-bottom: 0">Info about the campaign...</p>
+                <div class="stat-element" style="background: #dd7a34; color: black">
+                    <p style="font-size: medium" class=""><b>Grassroots Suicide Prevention</b></p>
+                    <p style="font-size: small; margin-bottom: 0; text-align: justify">They work locally and nationally to arm people with the skills to effectively support someone at risk of suicide. Their work helps save lives by enabling the kind of conversations that can really make a difference.</p>
+                    <a href="https://www.prevent-suicide.org.uk" target="_blank" style="font-size: small; color: white">Read more...</a>
+                </div>
+
+                <div class="stat-element" style="background: #8dc558; color: black">
+                    <p style="font-size: medium" class=""><b>Amaze</b></p>
+                    <p style="font-size: small; margin-bottom: 0; text-align: justify">Amaze gives information, advice and support services to families of children and young people with special educational needs and disabilities in Brighton & Hove and Sussex to build their confidence, knowledge, skills and resilience.</p>
+                    <a href="https://amazesussex.org.uk/" target="_blank" style="font-size: small; color: white">Read more...</a>
+                </div>
+
+                <div class="stat-element" style="background: #3b4587; color: white">
+                    <p style="font-size: medium" class=""><b>Buglife</b></p>
+                    <p style="font-size: small; margin-bottom: 0; text-align: justify">Buglife has a wealth of practical conservation work predominantly within the UK. With so many species to choose from Buglife has to prioritise work areas meaning that the current focus is predominantly on pollinators and freshwater habitats.</p>
+                    <a href="https://www.buglife.org.uk/" target="_blank" style="font-size: small; color: #8dc558">Read more...</a>
+                </div>
+
+                <div class="stat-element" style="background: #28a745; color: white">
+                    <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">
+                        <a class="btn btn-success btn-lg" style="pointer-events: none;" href="/donate/{{ support_challenge_id }}" disabled>Click here to support this campaign</a>
+                    </span>
+                </div>
+
+                <div class="stat-element" style="background: {{ days_colour }}; color: black">
+                    <p class="text-center"><b>{{ days }}</b></p>
+                    <p style="font-size: small; margin-bottom: 0">{{ days_text }}</p>
                 </div>
 
                 <div class="stat-element">
@@ -60,12 +84,7 @@
                     <p style="font-size: small; margin-bottom: 0">Challenges meeting £75 target</p>
                 </div>
 
-                <div class="stat-element" style="background: {{ days_colour }}; color: black">
-                    <p class="text-center"><b>{{ days }}</b></p>
-                    <p style="font-size: small; margin-bottom: 0">{{ days_text }}</p>
-                </div>
-
-                {% if authenticated %}
+                {% if authenticated and days_text != 'Days until start' %}
                     {% if challenge1 %}
                         <div class="stat-element">
                             <p class="text-center" style="font-size: x-large"><b>1. {{ challenge1.Title }}</b></p>
@@ -87,7 +106,7 @@
                             <p style="font-size: small; margin-bottom: 0">By: {{ challenge3.Participant.Name }}</p>
                         </div>
                     {% endif %}
-                {% else %}
+                {% elif not authenticated and days_text != 'Days until start' %}
                     <div class="stat-element" style="background: black; color: white">
                     <p class="text-center" style="font-size: medium"><i class="fas fa-lock"></i> Login required for leaderboard</p>
                 </div>
@@ -108,7 +127,7 @@
                                 <iframe width="300" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             {% else %}
                                 <div class="card-img-top" style="background: rgba(0, 0, 0, 200); width: 100%; height: 200px">
-                                    <p style="color: white" class="text-center"><i class="fas fa-lock"></i> Login required</p>
+                                    <p style="color: white" class="text-center"><i class="fas fa-lock"></i> Login required for videos</p>
                                 </div>
                             {% endif %}
                         {% endif %}
@@ -117,7 +136,16 @@
                             <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name }}</h6>
                             <p class="card-text">{{ challenge.Description }}</p>
                             <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>
-                            <a href="/donate/{{ challenge.id }}" class="btn btn-primary">Donate</a>
+
+                            <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">
+                                <a class="btn btn-primary disabled" style="pointer-events: none;" href="/donate/{{ challenge.id }}" disabled>Donate</a>
+                            </span>
+
+                            {% if authenticated %}
+                                {% if challenge.id in my_challenges %}
+                                    <a href="/admin/edit/challenge/{{ challenge.id }}" class="btn btn-dark">Edit</a>
+                                {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -134,8 +162,22 @@
             </div>
         </div>
 
-
+        <script>
+            $(function () {
+              $('[data-toggle="popover"]').popover()
+            })
+        </script>
+        <script>
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     {% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+    {% endblock %}
+
     {% block footer %}
         {{ super() }}
     {% endblock %}

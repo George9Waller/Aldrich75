@@ -22,22 +22,17 @@
         {% endblock %}
 
         <div class="section" style="top: 10%; position: relative; padding: 30px; margin: auto; width: 50%; max-width: 500px">
-            <p class="text-center"><i class="fas fa-flag-checkered"></i><b> {{ function }} Challenge</b></p>
-            {% if function == 'Update' %}
-                <br>
-                <p>The previous participant was <b>{{ challenge.Participant.Name }}</b></p>
-                <h2 style="font-size: xx-large; color: red">Remember to set Participant</h2>
-            {% endif %}
+            <h2 class="text-center"><i class="fas fa-flag-checkered"></i><b> {{ function }} Challenge</b></h2>
 
             <div style="display: flex; flex-flow: row wrap; background: #1f2833; color: #45a29e; padding: 10px; border-radius: 5px">
                 <div>
-                    <p>1. Select your name</p>
+                    <p>1. Type your name (full name or not, we don't mind)</p>
                 </div>
                 <div>
-                    <p>2. Give the Challenge a title and a description (if you want)</p>
+                    <p>2. Give the Challenge a title, and a description (if you want)</p>
                 </div>
                 <div>
-                    <p>3. Upload a 10s video to WeTransfer saying what you are going to do</p>
+                    <p>3. Upload a 10s video to WeTransfer saying what you are going to do, by doing so you <b>consent</b> to your video being <b>available to everyone</b></p>
                 </div>
                 <div>
                     <p>4. Create the challenge</p>
@@ -45,6 +40,9 @@
             </div>
 
             <form method="post" action="">
+                {% if function == 'Update' %}
+                    <p><b>Participant:</b> {{ challenge.Participant.Name }}</p>
+                {% endif %}
                 {{ form.hidden_tag() }}
                 {% for field in form %}
                     {{ render_field(field) }}
@@ -54,6 +52,13 @@
                 <a class="" href="https://wetransfer.com/?to=06gwaller@brightoncollege.net" target="_blank" style="">Or upload via WeTransfer</a>
                 <br>
                 <button type="submit" class="btn btn-primary" style="margin-top: 10px">{{ function }}</button>
+                {% if function == 'Update' %}
+                    <br>
+                    <a style="color: darkred" href="mailto:aldrichhouse75@gmail.com?
+                    &subject=I%20want%20to%20delete%20my%20challenge
+                    &body=User:%0D%0AID:%20{{ challenge.Participant.id }}%0D%0AName:%20{{ challenge.Participant.Name }}%0D%0AEmail:%20{{ challenge.Participant.Email }}%0D%0A%0D%0AChallenge:%0D%0AID:%20{{ challenge.id }}%0D%0ATitle:%20{{ challenge.Title }}%0D%0ADescription:%20{{ challenge.Description }}%0D%0AMoney%20Raised:%20{{ challenge.MoneyRaised }}%0D%0AURL:%20{{ challenge.URL }}">
+                    Delete Challenge</a>
+                {% endif %}
             </form>
         </div>
 
@@ -68,7 +73,5 @@
         </script>
 
     {% endblock %}
-    {% block footer %}
-        {{ super() }}
-    {% endblock %}
+
 {% endblock %}

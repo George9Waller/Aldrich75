@@ -32,7 +32,7 @@ class Participant(Model):
     # TODO add validation if participant creation is exposed to web users
     id = PrimaryKeyField()
     Name = CharField()
-    Email = CharField(unique=True)
+    Email = CharField()
 
     class Meta:
         database = DATABASE

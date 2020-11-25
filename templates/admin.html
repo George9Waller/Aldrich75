@@ -50,10 +50,16 @@
 
                         {% for challenge in challenges %}
                             <div class="card" style="width: 18rem;">
-                                <iframe width="300" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                {% if challenge.URL != '' %}
+                                    <iframe width="300" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ challenge.Title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Participant id: {{ challenge.Participant.id }}</h6>
                                     <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name }}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Email }}</h6>
+                                    <br>
+                                    <h6 class="card-subtitle mb-2 text-muted">Challenge id: {{ challenge.id }}</h6>
                                     <p class="card-text">{{ challenge.Description }}</p>
                                     <p class="card-text">{{ challenge.URL }}</p>
                                     <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>

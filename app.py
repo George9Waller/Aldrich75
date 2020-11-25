@@ -61,9 +61,9 @@ def index():
         days = future - today
         colour = '##659D32'
 
-    progress = int((total / 6000) * 100)
+    progress = int((total / 7500) * 100)
 
-    ordered_challenges = models.Challenge.select().order_by(models.Challenge.MoneyRaised.desc())
+    ordered_challenges = models.Challenge.select().order_by(models.Challenge.MoneyRaised.asc())
     challenge1 = None
     challenge2 = None
     challenge3 = None
@@ -75,9 +75,25 @@ def index():
     except:
         pass
 
+    my_challenges = []
+    try:
+        name = request.cookies.get('name')
+        email = request.cookies.get('email')
+        participant = models.Participant.get(models.Participant.Name == name and models.Participant.Email == email)
+        for inspect_challenge in challenges:
+            if inspect_challenge.Participant == participant:
+                my_challenges.append(inspect_challenge.id)
+
+    except models.DoesNotExist:
+        pass
+
+    default_participant = models.Participant.get(models.Participant.Email == 'aldrichhouse75@gmail.com')
+    support_challenge = models.Challenge.get(models.Challenge.Participant == default_participant)
+
     return render_template('index.html', total=total, met_challenges=met_challenges, days=days.days, days_colour=colour,
                            days_text=days_text, authenticated=authenticated, challenges=challenges, progress=progress,
-                           challenge1=challenge1, challenge2=challenge2, challenge3=challenge3)
+                           challenge1=challenge1, challenge2=challenge2, challenge3=challenge3,
+                           my_challenges=my_challenges, support_challenge_id=support_challenge.id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -112,14 +128,30 @@ def create_challenge():
 
     if form.validate_on_submit():
         flash('Challenge created', 'success')
-        participant = models.Participant.get_participant_by_id(form.Participant.data)
+        try:
+            participant = models.Participant.get(models.Participant.Name == form.Name.data.strip()
+                                                 and models.Participant.Email == form.Email.data.lower().strip())
+        except models.DoesNotExist:
+            creating = True
+            while creating:
+                name = form.Name.data.strip()
+                email = form.Email.data.lower().strip()
+                try:
+                    participant = models.Participant.create(Name=name, Email=email)
+                    creating = False
+                except:
+                    name = name + '_'
 
         models.Challenge.create_challenge(participant, form.Title.data, form.Description.data)
-        return redirect(url_for('index'))
+
+        resp = make_response(redirect(url_for('index')))
+        resp.set_cookie('name', str(form.Name.data.strip()), max_age=15552000)
+        resp.set_cookie('email', str(form.Email.data.lower().strip()), max_age=15552000)
+        return resp
 
     else:
-        participants = models.Participant.get_participants()
-        form.Participant.choices = [(participant.id, participant.Name) for participant in participants]
+        form.Name.data = request.cookies.get('name')
+        form.Email.data = request.cookies.get('email')
         return render_template('create_challenge.html', form=form, function='Create')
 
 
@@ -177,23 +209,25 @@ def delete_challenge(challengeid):
 
 @app.route('/admin/edit/challenge/<int:challengeid>', methods=['GET', 'POST'])
 def edit_challenge(challengeid):
-    if request.cookies.get('admin'):
+    try:
+        participant = models.Participant.get(models.Participant.Name == request.cookies.get('name') and
+                               models.Participant.Email == request.cookies.get('email'))
+    except models.DoesNotExist:
+        participant = None
+
+    challenge = models.Challenge.get_challenge_by_id(challengeid)
+
+    if request.cookies.get('admin') or challenge.Participant == participant:
         form = forms.EditChallenge()
 
         if form.validate_on_submit():
-            models.Challenge.update({models.Challenge.Participant: form.Participant.data,
-                                     models.Challenge.Title: form.Title.data,
+            models.Challenge.update({models.Challenge.Title: form.Title.data,
                                      models.Challenge.Description: form.Description.data,
                                      models.Challenge.URL: form.URL.data,
                                      models.Challenge.MoneyRaised: form.MoneyRaised.data})\
                 .where(models.Challenge.id == challengeid).execute()
             return redirect(url_for('admin'))
         else:
-
-            challenge = models.Challenge.get_challenge_by_id(challengeid)
-            participants = models.Participant.get_participants()
-            form.Participant.choices = [(participant.id, participant.Name) for participant in participants]
-
             form.Title.data = challenge.Title
             form.Description.data = challenge.Description
             form.MoneyRaised.data = challenge.MoneyRaised
@@ -233,17 +267,7 @@ if __name__ == 'app':
     models.initialise()
 
     try:
-        import users
-
-        for user in users.get_users():
-            try:
-                if user[2] == 'Preferred Name' or user[2] == '':
-                    pass
-                else:
-                    name = user[2] + ' ' + user[0]
-                    models.Participant.create_participant(name, user[4])
-                    print('creating Participant for:', name, user[4])
-            except:
-                pass
-    except ModuleNotFoundError:
+        participant = models.Participant.create(Name='Aldrich 75', Email='aldrichhouse75@gmail.com')
+        models.Challenge.create(Participant=participant, Title='Raise Money For Charity', Description='Donate to this challenge if you just want to support this campaign and not a specific challenge')
+    except:
         pass

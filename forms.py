@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, SelectField
 
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
+from models import Participant
 
 
 class NonValidatingSelectField(SelectField):
@@ -9,17 +10,30 @@ class NonValidatingSelectField(SelectField):
         pass
 
 
+def email_exists(form, field):
+    email = field.data.lower()
+    if Participant.select().where(Participant.Email == email).exists():
+        raise ValidationError('Participant with that email already exists, check the name you have entered matches '
+                              'previously, or contact aldrichhouse75@gmail.com for help.')
+
+
 class NewChallenge(FlaskForm):
     """Form for creating a challenge"""
-    Participant = NonValidatingSelectField(
-        'Participant',
+    Name = StringField(
+        'Name',
         validators=[
-            DataRequired()
+            DataRequired(),
+            Length(min=1, max=50, message="Name must be max 50 characters")
         ]
     )
 
+    Email = StringField(
+        'Email',
+        validators=[email_exists]
+    )
+
     Title = StringField(
-        'Title',
+        'Challenge Title',
         validators=[
             DataRequired(),
             Length(min=1, max=50, message="Title must be max 50 characters")
@@ -27,7 +41,7 @@ class NewChallenge(FlaskForm):
     )
 
     Description = StringField(
-        'Description',
+        'Challenge Description',
         validators=[
             Length(max=250, message="Description must be max 250 characters")
         ]
@@ -42,12 +56,6 @@ class NewChallenge(FlaskForm):
 
 class EditChallenge(FlaskForm):
     """Form for editing a challenge"""
-    Participant = NonValidatingSelectField(
-        'Participant',
-        validators=[
-            DataRequired()
-        ]
-    )
 
     Title = StringField(
         'Title',
