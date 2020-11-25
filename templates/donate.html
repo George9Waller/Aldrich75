@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Aldrich 75{% endblock %}
+
+{% block head %}
+    {% block meta %}
+        {{ super() }}
+    {% endblock %}
+
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+    {% block content %}
+
+        {% block messages %}
+            {{ super() }}
+        {% endblock %}
+
+        <div class="section" style="top: 30%; position: relative; padding: 30px; margin: auto; width: 50%; max-width: 500px">
+            <h5 class="text-center"><i class="fas fa-coins"></i> Pledge to sponsor <b>{{ challenge.Participant.Name }}</b> to <b>{{ challenge.Title }}</b></h5>
+
+            <form method="post" action="">
+                <div class="form-group" style="max-width: 400px; margin: auto">
+                    <label for="Donation"></label>
+                    <input class="form-control" aria-autocomplete="none" aria-describedby="money-help" placeholder="Donation" name="Donation" type="number" min="0.00" max="10000.00" step="1" value="15">
+                    <small id="money-help">Email <a href="mailto:aldrichhouse75@gmail.com?subject=Help logging in">aldrichhouse75@gmail.com</a> for help</small>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" style="margin-left: 20px">Pledge to donate</button>
+            </form>
+        </div>
+
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Aldrich 75{% endblock %}
+
+{% block head %}
+    {% block meta %}
+        {{ super() }}
+    {% endblock %}
+
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+    {% block content %}
+
+        {% block messages %}
+            {{ super() }}
+        {% endblock %}
+
+        <div class="section" style="top: 30%; position: relative; padding: 30px; margin: auto; width: 50%; max-width: 500px">
+            <p class="text-center"><i class="fas fa-lock"></i><b> Enter the password to view the full site</b></p>
+
+            <form method="post" action="">
+                <div class="form-group" style="max-width: 400px; margin: auto">
+                    <label for="Password"></label>
+                    <input class="form-control" aria-autocomplete="none" aria-describedby="password-help" placeholder="Password" name="password" type="password">
+                    <small id="password-help">Email <a href="mailto:aldrichhouse75@gmail.com?subject=Help logging in">aldrichhouse75@gmail.com</a> for help</small>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" style="margin-left: 20px">Login</button>
+            </form>
+        </div>
+
+    {% endblock %}
+{% endblock %}

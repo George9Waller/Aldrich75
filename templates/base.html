@@ -1,0 +1,59 @@
+{% block head %}
+    {% block meta %}
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <meta name="description" content="Aldrich charity fundraising for the house's 75th anniversary.">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    {% endblock %}
+
+
+    {% block styles %}
+        <script src="https://kit.fontawesome.com/ba83112699.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{url_for('.static', filename='css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{ url_for('.static', filename='css/styles.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    {% block content %}
+        {% block messages %}
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == "success" %}
+                            <div class="notification {{ category }} alert alert-success" role="alert" id="{{ category }}" style="z-index: 11; font-size: large; position: fixed">
+                                    <span> <i class="fas fa-check-square"></i> {{ message }}</span>
+                            <script>
+                                $("#success").fadeTo(5000, 500).slideUp(500, function(){
+                                $("#success").slideUp(500);
+                                });</script>
+                            </div>
+                            {% else %}
+                            <div class="notification {{ category }} alert alert-warning show alert-dismissible" role="alert" id="{{ category }}" style="z-index: 11; font-size: large">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <span> <i class="fas fa-times"></i> {{ message }}</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        {% endblock %}
+    {% endblock %}
+    {% block scripts %}
+        <script src=".{{url_for('.static', filename='/js/jquery.min.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+                $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+                })
+        </script>
+    {% endblock %}
+{% endblock %}

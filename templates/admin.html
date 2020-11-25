@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Aldrich 75{% endblock %}
+
+{% block head %}
+    {% block meta %}
+        {{ super() }}
+    {% endblock %}
+
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+    {% block content %}
+
+        {% block messages %}
+            {{ super() }}
+        {% endblock %}
+
+        <div class="section" style="top: 5%; position: relative; padding: 30px; margin: auto; width: 90%; max-width: 1500px">
+            <h1 class="text-center"><i class="fas fa-user-cog"></i><b> Admin</b></h1>
+
+            <h2>Users</h2>
+            <div style="display: flex; flex-flow: row wrap">
+                {% for user in users %}
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ user.Name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ user.id }}</h6>
+                                <p class="card-text">{{ user.Email }}</p>
+                                <a href="/admin/delete/user/{{ user.id }}" class="btn btn-warning">Delete</a>
+                            </div>
+                        </div>
+                {% endfor %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Create User</h5>
+                        <a href="/admin/create/user" class="btn btn-primary">New...</a>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+            <h2>Challenges</h2>
+                <div style="display: flex; flex-flow: row wrap">
+
+                        {% for challenge in challenges %}
+                            <div class="card" style="width: 18rem;">
+                                <iframe width="300" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ challenge.Title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name }}</h6>
+                                    <p class="card-text">{{ challenge.Description }}</p>
+                                    <p class="card-text">{{ challenge.URL }}</p>
+                                    <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>
+                                    <a href="/admin/delete/challenge/{{ challenge.id }}" class="btn btn-danger">Delete</a>
+                                    <a href="/admin/edit/challenge/{{ challenge.id }}" class="btn btn-primary">Edit</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                        <div class="card" style="width: 18rem;">
+                          <div class="card-body">
+                            <h5 class="card-title">Add challenge</h5>
+                            <a href="{{ url_for('create_challenge') }}" class="btn btn-primary">Add challenge</a>
+                          </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+    {% endblock %}
+{% endblock %}
