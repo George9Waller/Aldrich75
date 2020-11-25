@@ -24,6 +24,7 @@
             <div class="heading" style="height: 20%; padding: 20px">
                 <div style="padding-left: 10%; padding-top: 10px; position: absolute">
                     <p class="bold" style="font-size: 60px">Aldrich 75</p>
+                    <p style="font-weight: 400"><b>#my75</b> is a campaign to raise money for house charities...</p>
                 </div>
                 <div style="right: 10%; padding-top: 10px; position: absolute">
                     <img style="height: 100px" alt="Aldrich Logo" src="/static/img/Aldrich_logo.png">
@@ -43,6 +44,11 @@
             {% endif %}
 
             <div style="display: flex; flex-flow: row wrap">
+
+                <div class="stat-element" style="background: purple; color: white">
+                    <p class="text-center"><b>Info</b></p>
+                    <p style="font-size: small; margin-bottom: 0">Info about the campaign...</p>
+                </div>
 
                 <div class="stat-element">
                     <p class="text-center"><b>£{{ '%0.2f' % total|float }}</b></p>
