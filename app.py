@@ -196,7 +196,11 @@ def create_user():
 
 
 if __name__ == 'app':
-    app.run()
+    # different host for web server
+    if os.uname().nodename == 'Georges-MacBook-Pro-2.local':
+        app.run(port=int(os.environ.get('PORT', 5000)), use_reloader=True, host='127.0.0.1')
+    else:
+        app.run(port=int(os.environ.get('PORT', 5000)), use_reloader=True, host='0.0.0.0')
     models.initialise()
 
     try:
