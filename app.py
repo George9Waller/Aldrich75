@@ -224,8 +224,7 @@ def delete_challenge(challengeid):
 @app.route('/admin/edit/challenge/<int:challengeid>', methods=['GET', 'POST'])
 def edit_challenge(challengeid):
     try:
-        participant = models.Participant.get(models.Participant.Name == request.cookies.get('name') and
-                               models.Participant.Email == request.cookies.get('email'))
+        participant = models.Participant.get(models.Participant.id == request.cookies.get('ParticipantID'))
     except models.DoesNotExist:
         participant = None
 
