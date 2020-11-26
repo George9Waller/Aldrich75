@@ -29,7 +29,7 @@ class NewChallenge(FlaskForm):
 
     Email = StringField(
         'Email',
-        validators=[email_exists]
+        validators=[]
     )
 
     Title = StringField(

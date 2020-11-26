@@ -77,12 +77,13 @@ def index():
 
     my_challenges = []
     try:
-        name = request.cookies.get('name')
-        email = request.cookies.get('email')
-        participant = models.Participant.get(models.Participant.Name == name and models.Participant.Email == email)
-        for inspect_challenge in challenges:
-            if inspect_challenge.Participant == participant:
-                my_challenges.append(inspect_challenge.id)
+        try:
+            participant = models.Participant.get(models.Participant.id == int(request.cookies.get('ParticipantID')))
+            for inspect_challenge in challenges:
+                if inspect_challenge.Participant == participant:
+                    my_challenges.append(inspect_challenge.id)
+        except:
+            pass
 
     except models.DoesNotExist:
         pass
@@ -90,10 +91,21 @@ def index():
     default_participant = models.Participant.get(models.Participant.Email == 'aldrichhouse75@gmail.com')
     support_challenge = models.Challenge.get(models.Challenge.Participant == default_participant)
 
-    return render_template('index.html', total=total, met_challenges=met_challenges, days=days.days, days_colour=colour,
-                           days_text=days_text, authenticated=authenticated, challenges=challenges, progress=progress,
-                           challenge1=challenge1, challenge2=challenge2, challenge3=challenge3,
-                           my_challenges=my_challenges, support_challenge_id=support_challenge.id)
+    popup = request.cookies.get('first')
+    if popup is None:
+        popup = False
+    print(popup)
+
+    resp = make_response(render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
+                                         days_colour=colour, days_text=days_text, authenticated=authenticated,
+                                         challenges=challenges, progress=progress, challenge1=challenge1,
+                                         challenge2=challenge2, challenge3=challenge3, my_challenges=my_challenges,
+                                         support_challenge_id=support_challenge.id, popup=popup))
+
+    if not popup:
+        resp.set_cookie('first', 'True', max_age=15552000)
+
+    return resp
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -145,13 +157,16 @@ def create_challenge():
         models.Challenge.create_challenge(participant, form.Title.data, form.Description.data)
 
         resp = make_response(redirect(url_for('index')))
-        resp.set_cookie('name', str(form.Name.data.strip()), max_age=15552000)
-        resp.set_cookie('email', str(form.Email.data.lower().strip()), max_age=15552000)
+        resp.set_cookie('ParticipantID', str(participant.id), max_age=15552000)
         return resp
 
     else:
-        form.Name.data = request.cookies.get('name')
-        form.Email.data = request.cookies.get('email')
+        try:
+            participant = models.Participant.get_participant_by_id(int(request.cookies.get('ParticipantID')))
+            form.Name.data = participant.Name
+            form.Email.data = participant.Email
+        except:
+            pass
         return render_template('create_challenge.html', form=form, function='Create')
 
 
