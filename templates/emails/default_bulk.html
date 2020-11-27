@@ -258,7 +258,7 @@
           <!-- start permission -->
           <tr>
             <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-                {% if bulk %}
+                {% if not bulk %}
                     <p style="margin: 0;">You received this email because it is an important email related to an action you have recently made.</p>
                 {% else %}
                     <p>You have recieved this email as part of a bulk email to all challenge creators, if you no longer wish to receive these emails please <a href="http://www.aldrich75.co.uk/unsubscribe/{{ participant.id }}">unsubscribe</a></p>

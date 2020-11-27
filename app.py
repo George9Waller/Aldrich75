@@ -381,7 +381,7 @@ if __name__:
 
     # Bulk Email scheduler
     scheduler = BackgroundScheduler()
-    scheduler.add_job(func=bulk_email_checker, trigger="interval", seconds=900)
+    scheduler.add_job(func=bulk_email_checker, trigger="interval", seconds=300)
     scheduler.start()
     print('started scheduler')
 
