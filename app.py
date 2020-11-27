@@ -380,9 +380,9 @@ if __name__:
     # models.BulkEmailTask.update({models.BulkEmailTask.Done: False}).execute()
 
     # Bulk Email scheduler
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=bulk_email_checker, trigger="interval", seconds=300)
-    scheduler.start()
-    print('started scheduler')
-
-    atexit.register(lambda: scheduler.shutdown())
+    # scheduler = BackgroundScheduler()
+    # scheduler.add_job(func=bulk_email_checker, trigger="interval", seconds=60)
+    # scheduler.start()
+    # print('started scheduler')
+    #
+    # atexit.register(lambda: scheduler.shutdown())
