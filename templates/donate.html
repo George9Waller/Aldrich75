@@ -42,6 +42,38 @@
             </form>
         </div>
 
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Donating</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <h3>Important Donation Information</h3>
+                      <br>
+                      <p>Donations on this site are made through <b>Paypal.me</b> to a Brighton College account. The total raised will then be <b>split equally across Grassroots Suicide Prevention, Amaze and Buglife.</b></p>
+                      <p> Paypal imposes a <b>fee of 2.9%</b> for all payments made by card, as such when donating this 2.9% will be added to the amount you pay.</p>
+                      <p>If you would rather pay by paypal balance from an account you already have you can untick the box and the extra 2.9% will not be added.</p>
+                      <p>Please only press the button if you are going to donate otherwise the running total will be incorrect.</p>
+                      <br>
+                      <p>Finally, it would be helpful if you used 'Aldrich 75' as your payment reference</p>
+                  </div>
+                  <div class="modal-footer">
+                      <small>You are seeing this because this information is important for you to understand how we are handling donations</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        <script type="text/javascript">
+                $(window).on('load',function(){
+                    $('#exampleModalCenter').modal('show');
+                });
+            </script>
+
     {% endblock %}
 
 {% endblock %}

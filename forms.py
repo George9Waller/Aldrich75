@@ -1,3 +1,4 @@
+import peewee
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, SelectField
 
@@ -19,6 +20,24 @@ def email_exists(form, field):
 
 class NewChallenge(FlaskForm):
     """Form for creating a challenge"""
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+
+        try:
+            participant = Participant.get(Participant.Email == self.Email.data.lower().strip())
+            print(participant.Name, self.Name.data)
+            if participant.Name != self.Name.data.strip():
+                self.Name.errors.append(
+                    'This name / email combination has already been used, contact aldrichhouse75@gmail.com for help')
+                return False
+            else:
+                return True
+        except peewee.DoesNotExist:
+            return True
+
     Name = StringField(
         'Name',
         validators=[
@@ -29,7 +48,7 @@ class NewChallenge(FlaskForm):
 
     Email = StringField(
         'Email',
-        validators=[]
+        validators=[DataRequired()]
     )
 
     Title = StringField(

@@ -1,3 +1,4 @@
+import datetime
 from peewee import *
 from decimal import Decimal
 import os
@@ -20,7 +21,8 @@ else:
                                       user=os.environ.get('DATABASE_URL').split('/')[2].split(':')[0],
                                       password=os.environ.get('DATABASE_URL').split(':')[2].split('@')[0],
                                       host=os.environ.get('DATABASE_URL').split('@')[1].split(':')[0],
-                                      port=os.environ.get('DATABASE_URL').split(':')[3].split('/')[0])
+                                      port=os.environ.get('DATABASE_URL').split(':')[3].split('/')[0],
+                                      autorollback=True)
         print('Databse connected')
     except OperationalError:
         print('database not connected')
@@ -32,7 +34,8 @@ class Participant(Model):
     # TODO add validation if participant creation is exposed to web users
     id = PrimaryKeyField()
     Name = CharField()
-    Email = CharField()
+    Email = CharField(unique=True)
+    bulkemail = BooleanField(default=True)
 
     class Meta:
         database = DATABASE
@@ -89,9 +92,23 @@ class Challenge(Model):
         return Challenge.get(Challenge.id == id)
 
 
+class BulkEmailTask(Model):
+    id = PrimaryKeyField()
+    Task_Name = CharField(unique=True)
+    Task_Message = CharField()
+    DateTime = DateTimeField(default=datetime.datetime.now)
+    Template = CharField(default='emails/default_bulk.html')
+    Done = BooleanField(default=False)
+
+    class Meta:
+        database = DATABASE
+        order_by = ('id',)
+
+
 def initialise():
     print('Database initialising')
     DATABASE.connect()
     # DATABASE.drop_tables([Participant, Challenge])
-    DATABASE.create_tables([Participant, Challenge], safe=True)
+    DATABASE.create_tables([Participant, Challenge, BulkEmailTask], safe=True)
+    # DATABASE.execute_sql('ALTER TABLE participant ADD COLUMN "bulkemail" BOOLEAN DEFAULT TRUE')
     DATABASE.close()

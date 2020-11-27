@@ -1,11 +1,17 @@
 import os
+import atexit
 import datetime
 from decimal import Decimal
 import webbrowser
+import peewee
+import jinja2
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
 import models
 import forms
+import users
+import bulk_emails
 
 app = Flask(__name__)
 
@@ -24,6 +30,52 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get("EMAIL_USER")
 app.config['MAIL_PASSWORD'] = os.environ.get("EMAIL_PASS")
 mail = Mail(app)
+
+
+def bulk_email_checker():
+    print('checking mail tasks')
+    try:
+        for task in models.BulkEmailTask.select():
+            if not task.Done:
+                if task.DateTime <= datetime.datetime.now():
+                    print(task.DateTime, datetime.datetime.now())
+                    print('doing email task: {}'.format(task.Task_Name))
+                    do_bulk_task(task)
+    except peewee.InternalError:
+        print('Peewee Internal Error')
+        pass
+
+
+def do_bulk_task(task):
+
+    total = 0.00
+    for challenge in models.Challenge.select():
+        total += float(challenge.MoneyRaised)
+
+    attempted = []
+
+    for participant in models.Participant.select():
+        if participant.bulkemail:
+            if str(participant.Email) in attempted:
+                pass
+            else:
+                attempted.append(participant.Email)
+                # try:
+                msg = Message(task.Task_Name, sender='"Aldrich 75 <aldrichhouse75@gmail.com>"',
+                              recipients=[participant.Email])
+
+                with app.app_context():
+                    context = ()
+                    template = jinja2.Template(str(task.Template))
+                    msg.html = render_template(str(task.Template), participant=participant, total=total, title=task.Task_Name, message=task.Task_Message, bulk=True)
+
+                with app.test_request_context('/'):
+                    mail.send(msg)
+                # except:
+                #     pass
+
+    models.BulkEmailTask.update({models.BulkEmailTask.Done: True}).where(models.BulkEmailTask.id == task.id).execute()
+    print(attempted)
 
 
 def check_authenticated():
@@ -150,6 +202,11 @@ def create_challenge():
                 try:
                     participant = models.Participant.create(Name=name, Email=email)
                     creating = False
+                    msg = Message('New User', sender='"Aldrich 75 <aldrichhouse75@gmail.com>"',
+                                  recipients=[participant.Email])
+                    message = "It's great to see you're contributing to the campaign and make sure to share the news to your friends and family so they can donate. Your details have now been saved so if you want to make another challenge using this email you must use the name: " + participant.Name
+                    msg.html = render_template('emails/default_bulk.html', participant=participant, title='Congratulations on making a challenge!', message=message, bulk=False)
+                    mail.send(msg)
                 except:
                     name = name + '_'
 
@@ -183,8 +240,7 @@ def donate(challengeid):
             if request.form.get('paybycard'):
                 print(request.form.get('paybycard'))
                 money = round((money * 1.029), 2)
-            # webbrowser.open_new('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
-            return redirect('https://www.paypal.com/paypalme/aldrich75test/{}'.format(money))
+            return redirect('https://www.paypal.com/paypalme/BrightonCollege/{}'.format(money))
 
     return render_template('donate.html', challenge=challenge)
 
@@ -271,7 +327,25 @@ def create_user():
         return redirect(url_for('index'))
 
 
-if __name__ == 'app':
+@app.route('/unsubscribe/<int:ParticipantID>')
+def unsubscribe(ParticipantID):
+    try:
+        participant = models.Participant.get_participant_by_id(ParticipantID)
+    except:
+        flash('Error unsubscribing from bulk emails, please email aldrichhouse75@gmail.com', 'error')
+        return redirect(url_for('index'))
+
+    try:
+        models.Participant.update({models.Participant.bulkemail: False}).where(models.Participant.id == ParticipantID).execute()
+        message = participant.Name + ' has been successfully unsubscribed from bulk emails'
+        flash(message, 'success')
+        return redirect(url_for('index'))
+    except:
+        flash('Error unsubscribing from bulk emails, please email aldrichhouse75@gmail.com', 'error')
+        return redirect(url_for('index'))
+
+
+if __name__:
     # different host for web server
     if os.uname().nodename == 'Georges-MacBook-Pro-2.local':
         app.run(port=int(os.environ.get('PORT', 5000)), use_reloader=True, host='127.0.0.1')
@@ -280,7 +354,35 @@ if __name__ == 'app':
     models.initialise()
 
     try:
-        participant = models.Participant.create(Name='Aldrich 75', Email='aldrichhouse75@gmail.com')
+        participant = models.Participant.create(Name='Aldrich 75', Email='aldrichhouse75@gmail.com', bulkemail=True)
         models.Challenge.create(Participant=participant, Title='Raise Money For Charity', Description='Donate to this challenge if you just want to support this campaign and not a specific challenge')
     except:
         pass
+
+    try:
+        task_time = datetime.datetime(2020, 11, 27, 8, 40, 0, 0)
+        task = models.BulkEmailTask.create(Task_Name='Welcome Aldrich', Task_Message='message', DateTime=task_time, Template='emails/welcome_email.html', Done=False)
+        print('created email task')
+    except:
+        pass
+
+    # try:
+    #     for user in users.get_users():
+    #         try:
+    #             name = user[2] + ' ' + user[0]
+    #             print(name)
+    #             models.Participant.create_participant(name, user[4])
+    #         except:
+    #             pass
+    # except:
+    #     pass
+
+    # models.BulkEmailTask.update({models.BulkEmailTask.Done: False}).execute()
+
+    # Bulk Email scheduler
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=bulk_email_checker, trigger="interval", seconds=900)
+    scheduler.start()
+    print('started scheduler')
+
+    atexit.register(lambda: scheduler.shutdown())

@@ -27,6 +27,7 @@ body {
 
 .section {
     width: 90%;
+    min-width: 400px;
     background: #e0e0e0;
     padding: 20px;
     margin: 50px auto;

@@ -64,9 +64,9 @@
                 </div>
 
                 <div class="stat-element" style="background: #28a745; color: white">
-                    <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">
+{#                    <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">#}
                         <a class="btn btn-success btn-lg" style="pointer-events: none;" href="/donate/{{ support_challenge_id }}" disabled>Click here to support this campaign</a>
-                    </span>
+{#                    </span>#}
                 </div>
 
                 <div class="stat-element" style="background: {{ days_colour }}; color: black">
@@ -137,9 +137,9 @@
                             <p class="card-text">{{ challenge.Description }}</p>
                             <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>
 
-                            <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">
-                                <a class="btn btn-primary disabled" style="pointer-events: none;" href="/donate/{{ challenge.id }}" disabled>Donate</a>
-                            </span>
+{#                            <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">#}
+                                <a class="btn btn-primary" style="" href="/donate/{{ challenge.id }}">Donate</a>
+{#                            </span>#}
 
                             {% if authenticated %}
                                 {% if challenge.id in my_challenges %}
