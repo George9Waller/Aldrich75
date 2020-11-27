@@ -10,8 +10,7 @@ from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
 import models
 import forms
-import users
-import bulk_emails
+# import users
 
 app = Flask(__name__)
 
