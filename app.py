@@ -360,6 +360,7 @@ if __name__:
 
     try:
         task_time = datetime.datetime(2020, 11, 27, 8, 40, 0, 0)
+        print(task_time)
         task = models.BulkEmailTask.create(Task_Name='Welcome Aldrich', Task_Message='message', DateTime=task_time, Template='emails/welcome_email.html', Done=False)
         print('created email task')
     except:
