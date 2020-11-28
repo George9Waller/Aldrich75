@@ -297,15 +297,20 @@ def edit_challenge(challengeid):
 
     challenge = models.Challenge.get_challenge_by_id(challengeid)
 
-    if request.cookies.get('admin') == os.environ.get('ADMIN_KEY') or challenge.Participant == participant:
+    if check_authenticated_admin() or challenge.Participant == participant:
         form = forms.EditChallenge()
 
         if form.validate_on_submit():
-            models.Challenge.update({models.Challenge.Title: form.Title.data,
-                                     models.Challenge.Description: form.Description.data,
-                                     models.Challenge.URL: form.URL.data,
-                                     models.Challenge.MoneyRaised: form.MoneyRaised.data})\
-                .where(models.Challenge.id == challengeid).execute()
+            if check_authenticated_admin():
+                models.Challenge.update({models.Challenge.Title: form.Title.data,
+                                         models.Challenge.Description: form.Description.data,
+                                         models.Challenge.URL: form.URL.data,
+                                         models.Challenge.MoneyRaised: form.MoneyRaised.data})\
+                    .where(models.Challenge.id == challengeid).execute()
+            else:
+                models.Challenge.update({models.Challenge.Title: form.Title.data,
+                                         models.Challenge.Description: form.Description.data})\
+                    .where(models.Challenge.id == challengeid).execute()
             return redirect(url_for('admin'))
         else:
             form.Title.data = challenge.Title
