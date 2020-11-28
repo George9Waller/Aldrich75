@@ -1,6 +1,7 @@
 import os
 import atexit
 import datetime
+import time
 from decimal import Decimal
 import webbrowser
 import peewee
@@ -70,6 +71,7 @@ def do_bulk_task(task):
 
                 with app.test_request_context('/'):
                     mail.send(msg)
+                    time.sleep(30)
                 # except:
                 #     pass
 
@@ -78,9 +80,15 @@ def do_bulk_task(task):
 
 
 def check_authenticated():
-    if request.cookies.get('authenticated'):
+    if request.cookies.get('authenticated') == os.environ.get('LOGIN_KEY'):
         return True
     return False
+
+def check_authenticated_admin():
+    if request.cookies.get('admin') == os.environ.get('ADMIN_KEY'):
+        return True
+    else:
+        return False
 
 
 @app.route('/')
@@ -169,14 +177,14 @@ def login():
         if password == os.environ.get('ACCESS_PASS'):
             # TODO get stats
             resp = make_response(redirect(url_for('index')))
-            resp.set_cookie('authenticated', 'True', max_age=7200)
+            resp.set_cookie('authenticated', os.environ.get('LOGIN_KEY'), max_age=7200)
             flash('You will be logged in for 2h', 'success')
             return resp
         elif password == '':
             flash('A password is required', 'error')
         elif password == os.environ.get('ADMIN_PASS'):
             resp = make_response(redirect(url_for('admin')))
-            resp.set_cookie('admin', 'True', max_age=7200)
+            resp.set_cookie('admin', os.environ.get('ADMIN_KEY'), max_age=7200)
             return resp
         else:
             flash('Password incorrect', 'error')
@@ -187,6 +195,10 @@ def login():
 @app.route('/newchallenge', methods=['GET', 'POST'])
 def create_challenge():
     form = forms.NewChallenge()
+
+    if not check_authenticated():
+        flash('You must be logged in to perform this action', 'error')
+        return redirect(url_for('index'))
 
     if form.validate_on_submit():
         flash('Challenge created', 'success')
@@ -246,7 +258,7 @@ def donate(challengeid):
 
 @app.route('/admin')
 def admin():
-    if request.cookies.get('admin'):
+    if check_authenticated_admin():
         users = models.Participant.get_participants().order_by(models.Participant.Email)
         challenges = models.Challenge.get_challenges().order_by(models.Challenge.Participant)
         return render_template('admin.html', users=users, challenges=challenges)
@@ -256,7 +268,7 @@ def admin():
 
 @app.route('/admin/delete/user/<int:userid>')
 def delete_user(userid):
-    if request.cookies.get('admin'):
+    if check_authenticated_admin():
         user = models.Participant.get_participant_by_id(userid)
         models.Challenge.delete().where(models.Challenge.Participant == user).execute()
         models.Participant.delete().where(models.Participant.id == user.id).execute()
@@ -268,7 +280,7 @@ def delete_user(userid):
 
 @app.route('/admin/delete/challenge/<int:challengeid>')
 def delete_challenge(challengeid):
-    if request.cookies.get('admin'):
+    if check_authenticated_admin():
         models.Challenge.delete().where(models.Challenge.id == challengeid).execute()
         return redirect(url_for('admin'))
     else:
@@ -285,7 +297,7 @@ def edit_challenge(challengeid):
 
     challenge = models.Challenge.get_challenge_by_id(challengeid)
 
-    if request.cookies.get('admin') or challenge.Participant == participant:
+    if request.cookies.get('admin') == os.environ.get('ADMIN_KEY') or challenge.Participant == participant:
         form = forms.EditChallenge()
 
         if form.validate_on_submit():
@@ -300,7 +312,8 @@ def edit_challenge(challengeid):
             form.Description.data = challenge.Description
             form.MoneyRaised.data = challenge.MoneyRaised
             form.URL.data = challenge.URL
-            return render_template('create_challenge.html', form=form, function='Update', challenge=challenge)
+            return render_template('create_challenge.html', form=form, function='Update', challenge=challenge,
+                                   admin=check_authenticated_admin())
 
     else:
         flash('unauthorised action', 'error')
@@ -309,7 +322,7 @@ def edit_challenge(challengeid):
 
 @app.route('/admin/create/user', methods=['GET', 'POST'])
 def create_user():
-    if request.cookies.get('admin'):
+    if request.cookies.get('admin') == os.environ.get('ADMIN_KEY'):
         form = forms.NewUser()
 
         if form.validate_on_submit():
@@ -384,5 +397,8 @@ if __name__:
     # scheduler.add_job(func=bulk_email_checker, trigger="interval", seconds=60)
     # scheduler.start()
     # print('started scheduler')
+
+    """check emails on program start"""
+    bulk_email_checker()
     #
     # atexit.register(lambda: scheduler.shutdown())

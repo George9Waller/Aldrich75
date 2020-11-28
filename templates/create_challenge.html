@@ -44,9 +44,18 @@
                     <p><b>Participant:</b> {{ challenge.Participant.Name }}</p>
                 {% endif %}
                 {{ form.hidden_tag() }}
-                {% for field in form %}
-                    {{ render_field(field) }}
-                {% endfor %}
+                {% if function == 'Create' %}
+                    {% for field in form %}
+                        {{ render_field(field) }}
+                    {% endfor %}
+                {% elif function == 'Update' %}
+                    {{ render_field(form.Title) }}
+                    {{ render_field(form.Description) }}
+                    {% if admin == True %}
+                        {{ render_field(form.MoneyRaised) }}
+                        {{ render_field(form.URL) }}
+                    {% endif %}
+                {% endif %}
                 <br>
                 <a href="https://fileinbox.com/Aldrich75" class="fileinbox">Upload Video File (max 20MB)</a> <script type="text/javascript" src="https://fileinbox.com/embed.js"></script>
                 <a class="" href="https://wetransfer.com/?to=06gwaller@brightoncollege.net" target="_blank" style="">Or upload via WeTransfer</a>
