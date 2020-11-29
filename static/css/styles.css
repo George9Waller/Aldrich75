@@ -45,3 +45,7 @@ body {
     border-radius: 5px;
     font-size: 35px;
 }
+
+.card {
+    margin: 4px !important;
+}

@@ -5,6 +5,7 @@ import time
 from decimal import Decimal
 import webbrowser
 import peewee
+from peewee import fn
 import jinja2
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_mail import Mail, Message
@@ -95,7 +96,7 @@ def check_authenticated_admin():
 def index():
     authenticated = check_authenticated()
 
-    challenges = models.Challenge.get_challenges()
+    challenges = models.Challenge.select().order_by(fn.Random())
 
     total = 0
     met_challenges = 0
