@@ -204,6 +204,8 @@ def login():
             if 0 < len(request.cookies.get('ParticipantID')) <= 3:
                 old_value = request.cookies.get('ParticipantID')
                 resp.set_cookie('ParticipantID', hashlib.sha224(str(old_value).encode('utf-8')).hexdigest())
+            resp.delete_cookie('email')
+            resp.delete_cookie('name')
             flash('You will be logged in to view restricted data and make challenges for 2h', 'success')
             return resp
         elif password == '':
