@@ -8,7 +8,7 @@ import hashlib
 import peewee
 from peewee import fn
 import jinja2
-#from flask_sslify import SSLify
+from flask_sslify import SSLify
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
@@ -17,7 +17,7 @@ import forms
 # import users
 
 app = Flask(__name__)
-#sslify = SSLify(app)
+sslify = SSLify(app)
 
 try:
     import environment
