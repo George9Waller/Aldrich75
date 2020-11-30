@@ -206,11 +206,14 @@ def login():
             resp = make_response(redirect(url_for('index')))
             resp.set_cookie('authenticated', os.environ.get('LOGIN_KEY'), max_age=7200)
             resp.set_cookie('make_challenge', os.environ.get('CHALLENGE_KEY'), max_age=7200)
-            if 0 < len(request.cookies.get('ParticipantID')) <= 3:
-                old_value = request.cookies.get('ParticipantID')
-                resp.set_cookie('ParticipantID', hashlib.sha224(str(old_value).encode('utf-8')).hexdigest())
-            resp.delete_cookie('email')
-            resp.delete_cookie('name')
+            try:
+                if 0 < len(request.cookies.get('ParticipantID')) <= 3:
+                    old_value = request.cookies.get('ParticipantID')
+                    resp.set_cookie('ParticipantID', hashlib.sha224(str(old_value).encode('utf-8')).hexdigest())
+                resp.delete_cookie('email')
+                resp.delete_cookie('name')
+            except:
+                pass
             flash('You will be logged in to view restricted data and make challenges for 2h', 'success')
             return resp
         elif password == '':
