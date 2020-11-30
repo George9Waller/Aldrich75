@@ -145,7 +145,7 @@
                         </div>
                         <div class="card-body">
                             {% if authenticated %}
-                                <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name }}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name.split(' ')[0] }}</h6>
                             {% endif %}
                             <p class="card-text">{{ challenge.Description }}</p>
                             <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>
