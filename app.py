@@ -4,6 +4,7 @@ import datetime
 import time
 from decimal import Decimal
 import webbrowser
+import hashlib
 import peewee
 from peewee import fn
 import jinja2
@@ -149,9 +150,14 @@ def index():
         pass
 
     my_challenges = []
+
     try:
         try:
-            participant = models.Participant.get(models.Participant.id == int(request.cookies.get('ParticipantID')))
+            for iter_participant in models.Participant.select():
+                if hashlib.sha224(str(iter_participant.id).encode('utf-8')).hexdigest() == request.cookies.get('ParticipantID'):
+                    participant = iter_participant
+                    break
+
             for inspect_challenge in challenges:
                 if inspect_challenge.Participant == participant:
                     my_challenges.append(inspect_challenge.id)
@@ -192,10 +198,12 @@ def login():
     if request.method == 'POST':
         password = request.form.get('password')
         if password == os.environ.get('ACCESS_PASS'):
-            # TODO get stats
             resp = make_response(redirect(url_for('index')))
             resp.set_cookie('authenticated', os.environ.get('LOGIN_KEY'), max_age=7200)
             resp.set_cookie('make_challenge', os.environ.get('CHALLENGE_KEY'), max_age=7200)
+            if 0 < len(request.cookies.get('ParticipantID')) <= 3:
+                old_value = request.cookies.get('ParticipantID')
+                resp.set_cookie('ParticipantID', hashlib.sha224(str(old_value).encode('utf-8')).hexdigest())
             flash('You will be logged in to view restricted data and make challenges for 2h', 'success')
             return resp
         elif password == '':
@@ -250,7 +258,9 @@ def create_challenge():
         models.Challenge.create_challenge(participant, form.Title.data, form.Description.data)
 
         resp = make_response(redirect(url_for('index')))
-        resp.set_cookie('ParticipantID', str(participant.id), max_age=15552000)
+        hash_id = str(participant.id).encode('utf-8')
+        resp.set_cookie('ParticipantID', hashlib.sha224(hash_id).hexdigest(), max_age=15552000)
+        print(hashlib.sha224(hash_id).hexdigest())
         return resp
 
     else:
