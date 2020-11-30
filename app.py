@@ -7,6 +7,7 @@ import webbrowser
 import peewee
 from peewee import fn
 import jinja2
+from flask_sslify import SSLify
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
@@ -15,6 +16,7 @@ import forms
 # import users
 
 app = Flask(__name__)
+sslify = SSLify(app)
 
 try:
     import environment
@@ -98,14 +100,6 @@ def check_authenticated_make_challenge():
         return True
     else:
         return False
-
-
-@app.before_request
-def before_request():
-    if request.url.startswith('http://'):
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)
 
 
 @app.route('/')
