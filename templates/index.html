@@ -41,7 +41,8 @@
 
             {% if authenticated %}
                 <div class="alert alert-dark">Authenticated: You can view restricted data</div>
-            {% elif make_challenge %}
+            {% endif %}
+            {% if make_challenge %}
                 <div class="alert alert-dark">Authenticated: You can make challenges</div>
             {% elif make_challenge %}
                 <div class="alert alert-dark">Authenticated: You have admin privileges</div>

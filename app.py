@@ -166,6 +166,8 @@ def index():
     if popup is None:
         popup = False
 
+    print(make_challenge)
+
     resp = make_response(render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
                                          days_colour=colour, days_text=days_text, authenticated=authenticated,
                                          challenges=challenges, progress=progress, challenge1=challenge1,
