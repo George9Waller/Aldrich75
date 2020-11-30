@@ -103,6 +103,13 @@ def check_authenticated_make_challenge():
         return False
 
 
+def get_participant_from_hash():
+    for iter_participant in models.Participant.select():
+        if hashlib.sha224(str(iter_participant.id).encode('utf-8')).hexdigest() == request.cookies.get('ParticipantID'):
+            return iter_participant
+    return None
+
+
 @app.route('/')
 def index():
     authenticated = check_authenticated()
@@ -154,9 +161,7 @@ def index():
     try:
         try:
             for iter_participant in models.Participant.select():
-                if hashlib.sha224(str(iter_participant.id).encode('utf-8')).hexdigest() == request.cookies.get('ParticipantID'):
-                    participant = iter_participant
-                    break
+                participant = get_participant_from_hash()
 
             for inspect_challenge in challenges:
                 if inspect_challenge.Participant == participant:
@@ -267,7 +272,7 @@ def create_challenge():
 
     else:
         try:
-            participant = models.Participant.get_participant_by_id(int(request.cookies.get('ParticipantID')))
+            participant = get_participant_from_hash()
             form.Name.data = participant.Name
             form.Email.data = participant.Email
         except:
