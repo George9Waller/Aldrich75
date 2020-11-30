@@ -124,15 +124,17 @@
                     <div class="card" style="width: 18rem;">
                         {% if challenge.URL != '' %}
                             {% if authenticated %}
-                                <iframe width="286" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <iframe width="286" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="background: black"></iframe>
                             {% else %}
                                 <div class="card-img-top" style="background: rgba(0, 0, 0, 200); width: 100%; height: 30px">
                                     <p style="color: white" class="text-center"><i class="fas fa-lock"></i> Login required for videos</p>
                                 </div>
                             {% endif %}
                         {% endif %}
+                        <div class="card-img-top" style="background: #090035; width: 100%; padding: 10px">
+                            <h5 class="card-title" style="color: white">{{ challenge.Title }}</h5>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ challenge.Title }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name }}</h6>
                             <p class="card-text">{{ challenge.Description }}</p>
                             <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>

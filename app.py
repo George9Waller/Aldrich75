@@ -96,7 +96,9 @@ def check_authenticated_admin():
 def index():
     authenticated = check_authenticated()
 
-    challenges = models.Challenge.select().order_by(fn.Random())
+    challenges_content = models.Challenge.select().where(models.Challenge.URL != '').order_by(fn.Random())
+    challenges_empty = models.Challenge.select().where(models.Challenge.URL == '').order_by(fn.Random())
+    challenges = challenges_content + challenges_empty
 
     total = 0
     met_challenges = 0
