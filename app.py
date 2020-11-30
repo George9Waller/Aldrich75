@@ -182,7 +182,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # redirect if already authenticated
-    if check_authenticated():
+    if check_authenticated() and check_authenticated_make_challenge():
         return redirect(url_for('index'))
 
     if request.method == 'POST':
