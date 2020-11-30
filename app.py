@@ -85,8 +85,16 @@ def check_authenticated():
         return True
     return False
 
+
 def check_authenticated_admin():
     if request.cookies.get('admin') == os.environ.get('ADMIN_KEY'):
+        return True
+    else:
+        return False
+
+
+def check_authenticated_make_challenge():
+    if request.cookies.get('make_challenge') == os.environ.get('CHALLENGE_KEY'):
         return True
     else:
         return False
@@ -95,6 +103,7 @@ def check_authenticated_admin():
 @app.route('/')
 def index():
     authenticated = check_authenticated()
+    make_challenge = check_authenticated_make_challenge()
 
     challenges_content = models.Challenge.select().where(models.Challenge.URL != '').order_by(fn.Random())
     challenges_empty = models.Challenge.select().where(models.Challenge.URL == '').order_by(fn.Random())
@@ -161,7 +170,8 @@ def index():
                                          days_colour=colour, days_text=days_text, authenticated=authenticated,
                                          challenges=challenges, progress=progress, challenge1=challenge1,
                                          challenge2=challenge2, challenge3=challenge3, my_challenges=my_challenges,
-                                         support_challenge_id=support_challenge.id, popup=popup))
+                                         support_challenge_id=support_challenge.id, popup=popup,
+                                         make_challenge=make_challenge))
 
     if not popup:
         resp.set_cookie('first', 'True', max_age=15552000)
@@ -181,13 +191,22 @@ def login():
             # TODO get stats
             resp = make_response(redirect(url_for('index')))
             resp.set_cookie('authenticated', os.environ.get('LOGIN_KEY'), max_age=7200)
-            flash('You will be logged in for 2h', 'success')
+            resp.set_cookie('make_challenge', os.environ.get('CHALLENGE_KEY'), max_age=7200)
+            flash('You will be logged in to view restricted data and make challenges for 2h', 'success')
             return resp
         elif password == '':
             flash('A password is required', 'error')
         elif password == os.environ.get('ADMIN_PASS'):
             resp = make_response(redirect(url_for('admin')))
             resp.set_cookie('admin', os.environ.get('ADMIN_KEY'), max_age=7200)
+            resp.set_cookie('authenticated', os.environ.get('LOGIN_KEY'), max_age=7200)
+            resp.set_cookie('make_challenge', os.environ.get('CHALLENGE_KEY'), max_age=7200)
+            flash('You will be logged in as admin', 'success')
+            return resp
+        elif password == os.environ.get('CHALLENGE_PASS'):
+            resp = make_response(redirect(url_for('index')))
+            resp.set_cookie('make_challenge', os.environ.get('CHALLENGE_KEY'), max_age=7200)
+            flash('You will be logged in to make challenges for 2h', 'success')
             return resp
         else:
             flash('Password incorrect', 'error')
