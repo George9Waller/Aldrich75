@@ -40,7 +40,7 @@
             <h2>Info</h2>
 
             {% if authenticated or make_challenge %}
-                <div class="alert alert-dark">Authenticated: You can view {% if make_challenge %}make challenges{% endif %}{% if authenticated %} & view restricted data{% endif %} | <a href="{{ url_for('logout') }}">Logout</a></div>
+                <div class="alert alert-dark">Authenticated: You can {% if make_challenge %}make challenges{% endif %}{% if authenticated %} & view restricted data{% endif %} | <a href="{{ url_for('logout') }}">Logout</a></div>
             {% elif admin %}
                 <div class="alert alert-dark">Authenticated: You have admin privileges <a href="{{ url_for('logout') }}">Logout</a></div>
             {% endif %}
