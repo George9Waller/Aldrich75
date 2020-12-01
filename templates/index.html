@@ -82,7 +82,8 @@
 
                 <div class="stat-element">
                     <p class="text-center"><b>£{{ '%0.2f' % total|float }}</b></p>
-                    <p style="font-size: small; margin-bottom: 0">Total raised</p>
+                    {% set total = total|float * 1.25 %}
+                    <p style="font-size: small; margin-bottom: 0">Total (Upto £{{ '%0.2f' % total|float }} including Gift-Aid)</p>
                 </div>
 
                 <div class="stat-element">
