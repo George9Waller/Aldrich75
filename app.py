@@ -122,7 +122,7 @@ def index():
     total = 0
     met_challenges = 0
     for challenge in challenges:
-        money = round(float(challenge.MoneyRaised), 3)
+        money = challenge.MoneyRaised
         if money >= 75:
             met_challenges += 1
 
@@ -303,12 +303,12 @@ def donate(challengeid):
                 charityid = 129035
             print('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
-                            '%26charity%3D{}%26challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(charityid, money, money, charity, challengeid))
+                            '%26charity%3D{}%26challengeid%3D{}%26hash%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            .format(charityid, money, money, charity, challengeid, hashlib.sha224(str(money+challengeid).encode('utf-8')).hexdigest()))
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
-                            '%26charity%3D{}%26challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(charityid, money, money, charity, challengeid))
+                            '%26charity%3D{}%26challengeid%3D{}%26hash%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            .format(charityid, money, money, charity, challengeid, hashlib.sha224(str(money+challengeid).encode('utf-8')).hexdigest()))
 
     return render_template('donate.html', challenge=challenge)
 
@@ -320,6 +320,10 @@ def donated():
         charity = request.args.get('charity')
         challengeid = request.args.get('challengeid')
         challenge = models.Challenge.get(models.Challenge.id == challengeid)
+
+        if request.args.get('hash') != hashlib.sha224(str(amount+challengeid).encode('utf-8')).hexdigest():
+            flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
+            return redirect(url_for('index'))
 
         try:
             models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity)
@@ -372,7 +376,8 @@ def delete_challenge(challengeid):
 @app.route('/admin/edit/challenge/<int:challengeid>', methods=['GET', 'POST'])
 def edit_challenge(challengeid):
     try:
-        participant = models.Participant.get(models.Participant.id == request.cookies.get('ParticipantID'))
+        participandid = get_participant_from_hash()
+        participant = models.Participant.get(models.Participant.id == participandid)
     except models.DoesNotExist:
         participant = None
 

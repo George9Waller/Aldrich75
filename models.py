@@ -140,7 +140,7 @@ class BulkEmailTask(Model):
 def initialise():
     print('Database initialising')
     DATABASE.connect()
-    # DATABASE.drop_tables([Participant, Challenge])
+    # DATABASE.drop_tables([Donation])
     DATABASE.create_tables([Participant, Challenge, BulkEmailTask, Donation], safe=True)
     # DATABASE.execute_sql('ALTER TABLE participant ADD COLUMN "bulkemail" BOOLEAN DEFAULT TRUE')
     DATABASE.close()
