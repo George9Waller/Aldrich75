@@ -123,9 +123,11 @@ def index():
     met_challenges = 0
     for challenge in challenges:
         money = round(float(challenge.MoneyRaised), 3)
-        total += money
         if money >= 75:
             met_challenges += 1
+
+    for donation in models.Donation.select():
+        total += donation.Amount
 
     startdate = datetime.date(2021, 1, 5)
     enddate = datetime.date(2021, 3, 19)
@@ -292,14 +294,36 @@ def donate(challengeid):
         if money == 0:
             flash('You cannot pledge to donate £0', 'error')
         else:
-            flash('Thank you for pledging to donate £{}'.format(money), 'success')
-            challenge.update_money_raised_by(money)
-            if request.form.get('paybycard'):
-                print(request.form.get('paybycard'))
-                money = round((money * 1.029), 2)
-            return redirect('https://www.paypal.com/paypalme/BrightonCollege/{}'.format(money))
+            charity = models.Donation.get_lowest_charity()
+            return redirect('http://link.justgiving.com/v1/charity/donate/charityId/249633?amount={}&currency='
+                            'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
+                            '%26charity%3D{}%25challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            .format(money, money, charity, challengeid))
 
     return render_template('donate.html', challenge=challenge)
+
+
+@app.route('/donated')
+def donated():
+    try:
+        amount = request.args.get('amount')
+        charity = request.args.get('charity')
+        challengeid = request.args.get('challengeid')
+        challenge = models.Challenge.get(models.Challenge.id == challengeid)
+
+        try:
+            models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity)
+        except:
+            flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
+            return redirect(url_for('index'))
+
+        challenge.update_money_raised_by(amount)
+
+        flash('Your donation of £{} to {} has been successfully recorded'.format(amount, charity))
+
+    except:
+        flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
+        return redirect(url_for('index'))
 
 
 @app.route('/admin')

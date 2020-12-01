@@ -92,6 +92,38 @@ class Challenge(Model):
         return Challenge.get(Challenge.id == id)
 
 
+class Donation(Model):
+    Challenge = ForeignKeyField(Challenge, related_name='Challenge')
+    Amount = DecimalField()
+    Charity = CharField(max_length=40)
+    Timestamp = DateTimeField(default=datetime.datetime.now)
+
+    @staticmethod
+    def get_lowest_charity():
+        GrassrootsSuicidePrevention = 0
+        Amaze = 0
+        Buglife = 0
+        for donation in Donation.select():
+            if donation.Charity == 'Grassroots':
+                GrassrootsSuicidePrevention += donation.Amount
+            elif donation.Charity == 'Amaze':
+                Amaze += donation.Amount
+            elif donation.Charity == 'Buglife':
+                Buglife += donation.Amount
+
+        lowest = min([GrassrootsSuicidePrevention, Amaze, Buglife])
+        if lowest == GrassrootsSuicidePrevention:
+            return 'Grassroots'
+        elif lowest == Buglife:
+            return 'Buglife'
+        else:
+            return 'Amaze'
+
+    class Meta:
+        database = DATABASE
+        order_by = ('Charity',)
+
+
 class BulkEmailTask(Model):
     id = PrimaryKeyField()
     Task_Name = CharField(unique=True)
@@ -109,6 +141,6 @@ def initialise():
     print('Database initialising')
     DATABASE.connect()
     # DATABASE.drop_tables([Participant, Challenge])
-    DATABASE.create_tables([Participant, Challenge, BulkEmailTask], safe=True)
+    DATABASE.create_tables([Participant, Challenge, BulkEmailTask, Donation], safe=True)
     # DATABASE.execute_sql('ALTER TABLE participant ADD COLUMN "bulkemail" BOOLEAN DEFAULT TRUE')
     DATABASE.close()
