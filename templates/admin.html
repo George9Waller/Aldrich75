@@ -79,7 +79,42 @@
 
 
                     </div>
+
+            <br>
+            <h2>Donations</h2>
+                <div style="display: flex; flex-flow: row wrap">
+                    <div class="card" style="width: 10rem; background: #dd7a34; color: black">
+                        <div class="card-body">
+                            <p>Grassroots total: £{{ grassrootstotal }}</p>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem; background: #8dc558; color: black">
+                        <div class="card-body">
+                            <p>Amaze total: £{{ amazetotal }}</p>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem; background: #3b4587; color: white">
+                        <div class="card-body">
+                            <p>Buglife total: £{{ buglifetotal }}</p>
+                        </div>
+                    </div>
+                    {% for donation in donations %}
+                        <div class="card" style="width: 18rem">
+                            <div class="card-header">
+                                <h5 class="card-title">{{ donation.id }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Charity: {{ donation.Charity }}</p>
+                                <p>Amount: £{{ '%0.2f' % donation.Amount|float }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <small>{{ donation.Timestamp }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
+        </div>
+
 
     {% endblock %}
     {% block footer %}

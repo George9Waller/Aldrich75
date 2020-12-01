@@ -321,10 +321,6 @@ def donated():
         challengeid = request.args.get('challengeid')
         challenge = models.Challenge.get(models.Challenge.id == challengeid)
 
-        if request.args.get('hash') != hashlib.sha224(str(amount+challengeid).encode('utf-8')).hexdigest():
-            flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
-            return redirect(url_for('index'))
-
         try:
             models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity)
         except:
@@ -346,7 +342,21 @@ def admin():
     if check_authenticated_admin():
         users = models.Participant.get_participants().order_by(models.Participant.Email)
         challenges = models.Challenge.get_challenges().order_by(models.Challenge.Participant)
-        return render_template('admin.html', users=users, challenges=challenges)
+
+        grassrootstotal = 0
+        amazetotal = 0
+        buglifetotal = 0
+        for donation in models.Donation.select():
+            if donation.Charity == 'Grassroots':
+                grassrootstotal += float(donation.Amount)
+            elif donation.Charity == 'Amaze':
+                amazetotal += float(donation.Amount)
+            elif donation.Charity == 'Buglife':
+                buglifetotal += float(donation.Amount)
+
+        return render_template('admin.html', users=users, challenges=challenges,
+                               donations=models.Donation.select().order_by(models.Donation.Timestamp),
+                               grassrootstotal=grassrootstotal, amazetotal=amazetotal, buglifetotal=buglifetotal)
     else:
         return redirect(url_for('index'))
 
