@@ -301,9 +301,13 @@ def donate(challengeid):
                 charityid = 187874
             else:
                 charityid = 129035
+            print('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
+                            'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
+                            '%26charity%3D{}%26challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            .format(charityid, money, money, charity, challengeid))
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
-                            '%26charity%3D{}%25challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            '%26charity%3D{}%26challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
                             .format(charityid, money, money, charity, challengeid))
 
     return render_template('donate.html', challenge=challenge)
