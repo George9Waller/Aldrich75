@@ -295,10 +295,16 @@ def donate(challengeid):
             flash('You cannot pledge to donate £0', 'error')
         else:
             charity = models.Donation.get_lowest_charity()
-            return redirect('http://link.justgiving.com/v1/charity/donate/charityId/249633?amount={}&currency='
+            if charity == 'Grassroots':
+                charityid = 249633
+            elif charity == 'Buglife':
+                charityid = 187874
+            else:
+                charityid = 129035
+            return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
                             '%26charity%3D{}%25challengeid%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(money, money, charity, challengeid))
+                            .format(charityid, money, money, charity, challengeid))
 
     return render_template('donate.html', challenge=challenge)
 
@@ -319,7 +325,8 @@ def donated():
 
         challenge.update_money_raised_by(amount)
 
-        flash('Your donation of £{} to {} has been successfully recorded'.format(amount, charity))
+        flash('Your donation of £{} to {} has been successfully recorded'.format(amount, charity), 'success')
+        return redirect(url_for('index'))
 
     except:
         flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
