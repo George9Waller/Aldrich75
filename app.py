@@ -17,7 +17,7 @@ import forms
 # import users
 
 app = Flask(__name__)
-sslify = SSLify(app)
+# sslify = SSLify(app)
 
 try:
     import environment
@@ -288,29 +288,32 @@ def create_challenge():
 @app.route('/donate/<int:challengeid>', methods=['GET', 'POST'])
 def donate(challengeid):
     challenge = models.Challenge.get_challenge_by_id(challengeid)
+    charity_message = request.args.get('charity')
+    print(charity_message)
 
     if request.method == 'POST':
         money = round(float(request.form.get('Donation')), 3)
         if money == 0:
             flash('You cannot pledge to donate £0', 'error')
         else:
-            charity = models.Donation.get_lowest_charity()
+            if charity_message is None:
+                print('calculating least donated challenge')
+                charity = models.Donation.get_lowest_charity()
+            else:
+                charity = charity_message
             if charity == 'Grassroots':
                 charityid = 249633
             elif charity == 'Buglife':
                 charityid = 187874
             else:
                 charityid = 129035
-            print('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
-                            'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
-                            '%26charity%3D{}%26challengeid%3D{}%26hash%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(charityid, money, money, charity, challengeid, hashlib.sha224(str(money+challengeid).encode('utf-8')).hexdigest()))
+            print('redirectibng to link')
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
-                            '%26charity%3D{}%26challengeid%3D{}%26hash%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(charityid, money, money, charity, challengeid, hashlib.sha224(str(money+challengeid).encode('utf-8')).hexdigest()))
+                            '%26charity%3D{}%26challengeid%3D{}%26hash%3D%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            .format(charityid, money, money, charity, challengeid))
 
-    return render_template('donate.html', challenge=challenge)
+    return render_template('donate.html', challenge=challenge, charity=charity_message)
 
 
 @app.route('/donated')
