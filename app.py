@@ -17,7 +17,7 @@ import forms
 # import users
 
 app = Flask(__name__)
-sslify = SSLify(app)
+# sslify = SSLify(app)
 
 try:
     import environment
@@ -310,10 +310,13 @@ def donate(challengeid):
             else:
                 charityid = 129035
             print('redirectibng to link')
+            message = request.form.get('Message')[:200]
+            message = message.replace(" ", "%20")
+            print(message)
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
                             '%26charity%3D{}%26challengeid%3D{}%26message%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(charityid, money, money, charity, challengeid, request.form.get('Message')[:200]))
+                            .format(charityid, money, money, charity, challengeid, message))
 
     return render_template('donate.html', challenge=challenge, charity=charity_message)
 
