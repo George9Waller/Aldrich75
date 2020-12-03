@@ -49,3 +49,7 @@ body {
 .card {
     margin: 4px !important;
 }
+
+html {
+  scroll-behavior: smooth;
+}

@@ -86,6 +86,7 @@
                 <div class="stat-element" style="background: #28a745; color: black; font-size: small">
                     <p style="font-size: medium; color: white"><b>3 Ways to support #my75:</b></p>
                     <p style="font-size: medium; color: black">3. Or finally, Donate to a specific challenge below:</p>
+                    <a class="btn btn-sm btn-info" href="#challenges">Challenges</a>
                 </div>
 
                 <div class="stat-element" style="background: {{ days_colour }}; color: black">
@@ -136,9 +137,10 @@
         </div>
 
         <div class="section">
-            <h2>Recent donations</h2>
+            <h2>4 Most Recent donations</h2>
+            <a class="btn btn-sm btn-info" href="#alldonations">All donations</a>
             <div style="display: flex; flex-flow: row wrap">
-                {% for donation in donations[:10] %}
+                {% for donation in donations[:4] %}
                     <div class="card" style="width: 18rem">
                         {% if donation.Charity == 'Grassroots' %}
                             {% set colour = 'black' %}
@@ -174,8 +176,13 @@
             </div>
         </div>
 
-        <div class="section">
+        <div class="section" id="challenges">
             <h2>Challenges</h2>
+            {% if make_challenge %}
+                <a href="{{ url_for('create_challenge') }}" class="btn btn-primary">Add challenge</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-dark">Login to create a challenge</a>
+            {% endif %}
 
             <div style="display: flex; flex-flow: row wrap">
 
@@ -213,26 +220,10 @@
                     </div>
                 {% endfor %}
 
-                {% if make_challenge %}
-                    <div class="card" style="width: 18rem;">
-                      <div class="card-body">
-                        <h5 class="card-title">Add challenge</h5>
-                        <a href="{{ url_for('create_challenge') }}" class="btn btn-primary">Add challenge</a>
-                      </div>
-                    </div>
-                {% else %}
-                    <div class="card" style="width: 18rem;">
-                      <div class="card-body">
-                        <h5 class="card-title">Add challenge</h5>
-                        <a href="{{ url_for('login') }}" class="btn btn-dark">Login to create a challenge</a>
-                      </div>
-                    </div>
-                {% endif %}
-
             </div>
         </div>
 
-        <div class="section">
+        <div class="section" id="alldonations">
             <h2>All donations</h2>
             <div style="display: flex; flex-flow: row wrap">
                 {% for donation in donations %}
