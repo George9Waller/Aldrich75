@@ -136,6 +136,45 @@
         </div>
 
         <div class="section">
+            <h2>Recent donations</h2>
+            <div style="display: flex; flex-flow: row wrap">
+                {% for donation in donations[:10] %}
+                    <div class="card" style="width: 18rem">
+                        {% if donation.Charity == 'Grassroots' %}
+                            {% set colour = 'black' %}
+                            {% set bgcolour = '#dd7a34' %}
+                        {% elif donation.Charity == 'Amaze' %}
+                            {% set colour = 'black' %}
+                            {% set bgcolour = '#8dc558' %}
+                        {% elif donation.Charity == 'Buglife' %}
+                            {% set bgcolour = '#3b4587' %}
+                            {% set colour = 'white' %}
+                        {% else %}
+                            {% set bgcolour = '#00000008' %}
+                            {% set colour = 'black' %}
+                        {% endif %}
+                        <div class="card-header" style="background: {{ bgcolour }}; color: {{ colour }}">
+                            <h5 class="card-title">£{{ '%0.2f' % donation.Amount|float }}</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if donation.message != '' and donation.message != none %}
+                                <p>{{ donation.message }}</p>
+                            {% else %}
+                                <small><i>No message left</i></small>
+                            {% endif %}
+                            <br>
+                            <small>Donated to: {{ donation.Charity }}</small>
+                        </div>
+                        <div class="card-footer">
+                            {% set timestamp = donation.Timestamp|string %}
+                            <small>{{ timestamp|truncate(19, killwords=False, end='') }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section">
             <h2>Challenges</h2>
 
             <div style="display: flex; flex-flow: row wrap">
@@ -190,6 +229,45 @@
                     </div>
                 {% endif %}
 
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>All donations</h2>
+            <div style="display: flex; flex-flow: row wrap">
+                {% for donation in donations %}
+                    <div class="card" style="width: 18rem">
+                        {% if donation.Charity == 'Grassroots' %}
+                            {% set colour = 'black' %}
+                            {% set bgcolour = '#dd7a34' %}
+                        {% elif donation.Charity == 'Amaze' %}
+                            {% set colour = 'black' %}
+                            {% set bgcolour = '#8dc558' %}
+                        {% elif donation.Charity == 'Buglife' %}
+                            {% set bgcolour = '#3b4587' %}
+                            {% set colour = 'white' %}
+                        {% else %}
+                            {% set bgcolour = '#00000008' %}
+                            {% set colour = 'black' %}
+                        {% endif %}
+                        <div class="card-header" style="background: {{ bgcolour }}; color: {{ colour }}">
+                            <h5 class="card-title">£{{ '%0.2f' % donation.Amount|float }}</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if donation.message != '' and donation.message != none %}
+                                <p>{{ donation.message }}</p>
+                            {% else %}
+                                <small><i>No message left</i></small>
+                            {% endif %}
+                            <br>
+                            <small>Donated to: {{ donation.Charity }}</small>
+                        </div>
+                        <div class="card-footer">
+                            {% set timestamp = donation.Timestamp|string %}
+                            <small>{{ timestamp|truncate(19, killwords=False, end='') }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
 

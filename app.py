@@ -183,12 +183,14 @@ def index():
 
     print(make_challenge)
 
+    donations = models.Donation.select().order_by(models.Donation.Timestamp.desc())
+
     resp = make_response(render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
                                          days_colour=colour, days_text=days_text, authenticated=authenticated,
                                          challenges=challenges, progress=progress, challenge1=challenge1,
                                          challenge2=challenge2, challenge3=challenge3, my_challenges=my_challenges,
                                          support_challenge_id=support_challenge.id, popup=popup,
-                                         make_challenge=make_challenge))
+                                         make_challenge=make_challenge, donations=donations))
 
     if not popup:
         resp.set_cookie('first', 'True', max_age=15552000)
@@ -310,8 +312,8 @@ def donate(challengeid):
             print('redirectibng to link')
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
-                            '%26charity%3D{}%26challengeid%3D{}%26hash%3D%26jgDonationId%3DJUSTGIVING-DONATION-ID'
-                            .format(charityid, money, money, charity, challengeid))
+                            '%26charity%3D{}%26challengeid%3D{}%26message%3D{}%26jgDonationId%3DJUSTGIVING-DONATION-ID'
+                            .format(charityid, money, money, charity, challengeid, request.form.get('Message')[:200]))
 
     return render_template('donate.html', challenge=challenge, charity=charity_message)
 
@@ -323,9 +325,10 @@ def donated():
         charity = request.args.get('charity')
         challengeid = request.args.get('challengeid')
         challenge = models.Challenge.get(models.Challenge.id == challengeid)
+        message = request.args.get('message')
 
         try:
-            models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity)
+            models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message)
         except:
             flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
             return redirect(url_for('index'))

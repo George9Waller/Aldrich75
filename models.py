@@ -97,6 +97,7 @@ class Donation(Model):
     Amount = DecimalField()
     Charity = CharField(max_length=40)
     Timestamp = DateTimeField(default=datetime.datetime.now)
+    message = CharField(max_length=200)
 
     @staticmethod
     def get_lowest_charity():
