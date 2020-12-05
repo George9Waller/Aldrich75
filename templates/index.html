@@ -46,6 +46,7 @@
                   </li>
                 </ul>
                   <div class="btn-group-sm">
+                      <a class="btn btn-outline-info btn-sm" href="{{ url_for('donation_options') }}">Donate</a>
                       {% if not authenticated or not make_challenge %}
                           <a class="btn btn-outline-info btn-sm" href="{{ url_for('login') }}">Login</a>
                       {% else %}
@@ -107,23 +108,8 @@
                 </div>
 
                 <div class="stat-element" style="background: #28a745; color: black; font-size: small">
-                        <p style="font-size: medium; color: white"><b>3 Ways to support #my75:</b></p>
-                        <p style="font-size: medium; color: black">1. Donate to a pre-chosen charity to balance donations across our charities:</p>
-                        <a class="btn btn-success" style="background: black" href="/donate/{{ support_challenge_id }}">Click here to support a pre-chosen charity</a>
-                </div>
-
-                <div class="stat-element" style="background: #28a745; color: black; font-size: small">
-                    <p style="font-size: medium; color: white"><b>3 Ways to support #my75:</b></p>
-                    <p style="font-size: medium; color: black">2. Donate to a charity of your choice:</p>
-                        <a class="btn btn-success" style="background: #dd7a34" href="/donate/{{ support_challenge_id }}?charity=Grassroots">Click to support Grassroots Suicide Prevention</a>
-                        <a class="btn btn-success" style="background: #8dc558" href="/donate/{{ support_challenge_id }}?charity=Amaze">Click to support Amaze</a>
-                        <a class="btn btn-success" style="background: #3b4587; color: white" href="/donate/{{ support_challenge_id }}?charity=Buglife">Click to support Buglife</a>
-                </div>
-
-                <div class="stat-element" style="background: #28a745; color: black; font-size: small">
-                    <p style="font-size: medium; color: white"><b>3 Ways to support #my75:</b></p>
-                    <p style="font-size: medium; color: black">3. Or finally, Donate to a specific challenge below:</p>
-                    <a class="btn btn-sm btn-info" href="#challenges">Challenges</a>
+                        <p style="font-size: medium; color: white"><b>Support #my75:</b></p>
+                        <a class="btn btn-light" style="" href="{{ url_for('donation_options') }}">Donate</a>
                 </div>
 
                 <div class="stat-element" style="background: {{ days_colour }}; color: black">
@@ -202,8 +188,8 @@
                                 <p>{{ donation.message }}</p>
                             {% else %}
                                 <small><i>No message left</i></small>
+                                <br>
                             {% endif %}
-                            <br>
                             <small>Donated to: {{ donation.Charity }}</small>
                         </div>
                         <div class="card-footer">
@@ -292,8 +278,8 @@
                                 <p>{{ donation.message }}</p>
                             {% else %}
                                 <small><i>No message left</i></small>
+                                <br>
                             {% endif %}
-                            <br>
                             <small>Donated to: {{ donation.Charity }}</small>
                         </div>
                         <div class="card-footer">

@@ -458,6 +458,11 @@ def logout():
     return resp
 
 
+@app.route('/donation-options')
+def donation_options():
+    return render_template('donation_options.html', support_challenge_id=1)
+
+
 @app.route('/unsubscribe/<int:ParticipantID>')
 def unsubscribe(ParticipantID):
     try:

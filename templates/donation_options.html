@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Aldrich 75{% endblock %}
+
+{% block head %}
+    {% block meta %}
+        {{ super() }}
+    {% endblock %}
+
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+    <style>
+    body{
+        background: #7aa5d2;
+    }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    {% block content %}
+
+        {% block messages %}
+            {{ super() }}
+        {% endblock %}
+
+        <a class="btn btn-light btn-lg" style="position: absolute; top: 10px; left: 10px" href="{{ url_for('index') }}">Home</a>
+
+        <div class="container" style="display: flex; flex-flow: row wrap">
+            <div class="section" style="width: 25%!important; min-width: 200px!important;">
+                <h3 class="text-center">Donate</h3>
+                <p>You can donate to an automatically selected charity to help us balance the donations across all our chosen charities.</p>
+                <a class="btn btn-success" style="background: black; border: solid black" href="/donate/{{ support_challenge_id }}">Donate</a>
+            </div>
+            <div class="section" style="width: 25%!important; min-width: 200px!important;">
+                <h3 class="text-center">Donate to a Particular Charity</h3>
+                <p>If you would rather donate to a charity of your choice you can use these buttons:</p>
+                <a class="btn btn-success" style="background: #dd7a34; border: solid #dd7a34" href="/donate/{{ support_challenge_id }}?charity=Grassroots">Donate to Grassroots Suicide Prevention</a>
+                <a class="btn btn-success" style="background: #8dc558; border: solid #8dc558" href="/donate/{{ support_challenge_id }}?charity=Amaze">Donate to Amaze</a>
+                <a class="btn btn-success" style="background: #3b4587; border: solid #3b4587; color: white" href="/donate/{{ support_challenge_id }}?charity=Buglife">Donate to Buglife</a>
+            </div>
+            <div class="section" style="width: 25%!important; min-width: 200px!important;">
+                <h3 class="text-center">Donate to Support a Challenge</h3>
+                <p>You can support a challenge by donating using the button on their challenge</p>
+                <a class="btn btn-info" href="/#challenges">Challenges</a>
+            </div>
+        </div>
+
+    {% endblock %}
+
+{% endblock %}
