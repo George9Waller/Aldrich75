@@ -12,11 +12,18 @@ body {
 }
 
 .heading {
-    background: #090035;
+    /*background: #090035;*/
+    background: #7aa5d2;
+    background-image: url("/static/img/facebook_cover_photo_1.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: auto;
+    background-position-x: center;
     color: white;
     font-family: 'Work Sans', sans-serif;
     font-weight: 700;
-    height: 30%;
+    height: 60%;
+    max-height: 560px;
 }
 
 @media (max-width: 500px){

@@ -17,7 +17,7 @@ import forms
 # import users
 
 app = Flask(__name__)
-sslify = SSLify(app)
+# sslify = SSLify(app)
 
 try:
     import environment
