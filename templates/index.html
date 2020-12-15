@@ -44,6 +44,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="#alldonations">All Donations</a>
                   </li>
+                  <li class="nav-item">
+                      <a href="{{ url_for('about') }}#donate" class="nav-link"><span style="border-bottom: solid 3px #dd7a34">Char</span><span style="border-bottom: solid 3px #8dc558">ity </span><span style="border-bottom: solid 3px #3b4587">Info</span></a>
+                  </li>
                 </ul>
                   <div class="btn-group-sm">
                       <a class="btn btn-outline-info btn-sm" href="{{ url_for('donation_options') }}">Donate</a>
@@ -89,27 +92,13 @@
 
             <div style="display: flex; flex-flow: row wrap">
 
-                <div class="stat-element" style="background: #dd7a34; color: black">
-                    <p style="font-size: medium" class=""><b>Grassroots Suicide Prevention</b></p>
-                    <p style="font-size: small; margin-bottom: 0; text-align: justify">They work locally and nationally to arm people with the skills to effectively support someone at risk of suicide. Their work helps save lives by enabling the kind of conversations that can really make a difference.</p>
-                    <a href="https://www.prevent-suicide.org.uk" target="_blank" style="font-size: small; color: white">Read more...</a>
-                </div>
-
-                <div class="stat-element" style="background: #8dc558; color: black">
-                    <p style="font-size: medium" class=""><b>Amaze</b></p>
-                    <p style="font-size: small; margin-bottom: 0; text-align: justify">Amaze gives information, advice and support services to families of children and young people with special educational needs and disabilities in Brighton & Hove and Sussex to build their confidence, knowledge, skills and resilience.</p>
-                    <a href="https://amazesussex.org.uk/" target="_blank" style="font-size: small; color: white">Read more...</a>
-                </div>
-
-                <div class="stat-element" style="background: #3b4587; color: white">
-                    <p style="font-size: medium" class=""><b>Buglife</b></p>
-                    <p style="font-size: small; margin-bottom: 0; text-align: justify">Buglife has a wealth of practical conservation work predominantly within the UK. With so many species to choose from Buglife has to prioritise work areas meaning that the current focus is predominantly on pollinators and freshwater habitats.</p>
-                    <a href="https://www.buglife.org.uk/" target="_blank" style="font-size: small; color: #8dc558">Read more...</a>
+                <div class="stat-element" style="background-image: linear-gradient(45deg, #dd7a34 16.67%, #8dc558 16.67%, #8dc558 33.33%, #3b4587 33.33%, #3b4587 50%, #dd7a34 50%, #dd7a34 66.67%, #8dc558 66.67%, #8dc558 83.33%, #3b4587 83.33%, #3b4587 100%); background-size: 212.13px 212.13px; color: black; display: flex; justify-content: center; align-items: center">
+                    <a href="{{ url_for('about') }}#donate" style="color: white">Charity Info</a>
                 </div>
 
                 <div class="stat-element" style="background: #28a745; color: black; font-size: small">
                         <p style="font-size: medium; color: white"><b>Support #my75:</b></p>
-                        <a class="btn btn-light" style="" href="{{ url_for('donation_options') }}">Donate</a>
+                        <a class="btn btn-light" href="/about">Donate</a>
                 </div>
 
                 <div class="stat-element" style="background: {{ days_colour }}; color: black">
