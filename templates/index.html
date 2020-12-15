@@ -45,7 +45,7 @@
                     <a class="nav-link" href="#alldonations">All Donations</a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ url_for('about') }}#donate" class="nav-link"><span style="border-bottom: solid 3px #dd7a34">Char</span><span style="border-bottom: solid 3px #8dc558">ity </span><span style="border-bottom: solid 3px #3b4587">Info</span></a>
+                      <a href="{{ url_for('about') }}" class="nav-link"><span style="border-bottom: solid 3px #dd7a34">Char</span><span style="border-bottom: solid 3px #8dc558">ity </span><span style="border-bottom: solid 3px #3b4587">Info</span></a>
                   </li>
                 </ul>
                   <div class="btn-group-sm">
@@ -93,12 +93,12 @@
             <div style="display: flex; flex-flow: row wrap">
 
                 <div class="stat-element" style="background-image: linear-gradient(45deg, #dd7a34 16.67%, #8dc558 16.67%, #8dc558 33.33%, #3b4587 33.33%, #3b4587 50%, #dd7a34 50%, #dd7a34 66.67%, #8dc558 66.67%, #8dc558 83.33%, #3b4587 83.33%, #3b4587 100%); background-size: 212.13px 212.13px; color: black; display: flex; justify-content: center; align-items: center">
-                    <a href="{{ url_for('about') }}#donate" style="color: white">Charity Info</a>
+                    <a href="{{ url_for('about') }}" style="color: white">Charity Info</a>
                 </div>
 
                 <div class="stat-element" style="background: #28a745; color: black; font-size: small">
                         <p style="font-size: medium; color: white"><b>Support #my75:</b></p>
-                        <a class="btn btn-light" href="/about">Donate</a>
+                        <a class="btn btn-light" href="/about?donate=0">Donate</a>
                 </div>
 
                 <div class="stat-element" style="background: {{ days_colour }}; color: black">
