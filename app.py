@@ -300,7 +300,11 @@ def donate_general():
 
 @app.route('/donate/<int:challengeid>', methods=['GET', 'POST'])
 def donate(challengeid):
-    challenge = models.Challenge.get_challenge_by_id(challengeid)
+    if not challengeid:
+        flash('This is a general donation, not linked to a specific challenge.', 'error')
+        challenge = models.Challenge.get_challenge_by_id(1)
+    else:
+        challenge = models.Challenge.get_challenge_by_id(challengeid)
     charity_message = request.args.get('charity')
     print(charity_message)
 
@@ -320,7 +324,7 @@ def donate(challengeid):
                 charityid = 187874
             else:
                 charityid = 129035
-            print('redirectibng to link')
+            print('redirecting to link')
             message = request.form.get('Message')[:200]
             message = message.replace(" ", "%20")
             print(message)
