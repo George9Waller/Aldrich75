@@ -292,6 +292,12 @@ def create_challenge():
         return render_template('create_challenge.html', form=form, function='Create')
 
 
+@app.route('/donate', methods=['GET'])
+def donate_general():
+    flash('This is a general donation, not linked to a specific challenge.', 'error')
+    return redirect('/donate/1')
+
+
 @app.route('/donate/<int:challengeid>', methods=['GET', 'POST'])
 def donate(challengeid):
     challenge = models.Challenge.get_challenge_by_id(challengeid)
@@ -488,7 +494,7 @@ def unsubscribe(ParticipantID):
 
 @app.route('/about')
 def about():
-    return render_template('about.html', popup=False)
+    return render_template('about.html', popup=False, support_challenge_id=1)
 
 
 if __name__:
