@@ -112,10 +112,10 @@ def get_participant_from_hash():
 
 @app.route('/')
 def index():
-    if request.cookies.get('first') is None:
-        resp = make_response(render_template('about.html', popup=True))
-        resp.set_cookie('first', 'True', max_age=15552000)
-        return resp
+    # if request.cookies.get('first') is None:
+    #     resp = make_response(render_template('about.html', popup=True))
+    #     resp.set_cookie('first', 'True', max_age=15552000)
+    #     # return resp
 
     authenticated = check_authenticated()
     make_challenge = check_authenticated_make_challenge()

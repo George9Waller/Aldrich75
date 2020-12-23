@@ -34,12 +34,52 @@
             {{ super() }}
         {% endblock %}
 
-    <div style="display: flex; flex-flow: row wrap; justify-content: stretch; align-items: stretch; -webkit-align-items: stretch; height: 95%; width: 100%; position: absolute;">
+        <div class="top_menu" style="position: sticky; top: 0; width: 100%; min-height: 30px; display: flex; flex-flow: row wrap; background: #ffffff; justify-content: space-evenly; align-items: center">
+            <a class="link" href="{{ url_for('index') }}"><i class="fas fa-home"></i></a>
+            <a class="link" style="color: #7aa5d2" href="#donate">Donate</a>
+            <i class="fas fa-angle-right"></i>
+            <a class="link" style="color: #240340" href="#title">Info</a>
+            <i class="fas fa-angle-right"></i>
+            <a class="link" style="color: #dd7a34e0" href="#grassroots">Grassroots</a>
+            <i class="fas fa-angle-right"></i>
+            <a class="link" style="color: #8dc558e0" href="#amaze">Amaze</a>
+            <i class="fas fa-angle-right"></i>
+            <a class="link" style="color: #3b4587e0" href="#buglife">Buglife</a>
+        </div>
+
+    <div style="display: flex; flex-flow: column; justify-content: stretch; align-items: stretch; -webkit-align-items: stretch; height: 95%; width: 100%; position: absolute;">
         <div class="tile" style="background: #7aa5d2;" id="title">
             <a class="btn home" href="{{ url_for('index') }}" style="padding: 5px; color: white">
                 <h1 class="text-center display-2">Aldrich 75</h1>
                 <p class="text-center">Click to visit site</p>
             </a>
+        </div>
+
+        <div class="tile donate_color" id="donate" style="flex-flow: column">
+            <div>
+                <h1 class="display-4">Donate</h1>
+            </div>
+            <div>
+                <p>There are <b>3 ways to donate:</b></p>
+            </div>
+
+        </div>
+        <div class="tile donate_color">
+            <h3>1. Donate</h3>
+            <p>You can donate to an automatically selected charity to help us balance the donations across all our chosen charities.</p>
+            <a class="btn btn-success" style="background: black; border: solid black" href="/donate/{{ support_challenge_id }}">Donate</a>
+        </div>
+        <div class="tile donate_color">
+            <h3>2. Donate to a particular charity:</h3>
+            <p>If you would rather donate to a charity of your choice you can use these buttons:</p>
+            <a class="btn btn-success" style="background: #dd7a34; border: solid #dd7a34" href="/donate/{{ support_challenge_id }}?charity=Grassroots">Donate to Grassroots Suicide Prevention</a>
+            <a class="btn btn-success" style="background: #8dc558; border: solid #8dc558" href="/donate/{{ support_challenge_id }}?charity=Amaze">Donate to Amaze</a>
+            <a class="btn btn-success" style="background: #3b4587; border: solid #3b4587; color: white" href="/donate/{{ support_challenge_id }}?charity=Buglife">Donate to Buglife</a>
+        </div>
+        <div class="tile donate_color">
+            <h3>3. Donate to a challenge:</h3>
+            <p>You can support a challenge by donating using the button on their challenge</p>
+            <a class="btn btn-info" href="/#challenges">Challenges</a>
         </div>
 
         <div class="tile info_color" id="info">
@@ -66,6 +106,7 @@
         <div class="tile grassroots_color" id="grassroots">
             <h3 class="video_heading">Grassroots Suicide Prevention</h3>
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wfsuVLaZlOY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>Video about why we are supporting Grassroots</p>
         </div>
         <div class="tile grassroots_color">
             <p style="text-align: justify">They work locally and nationally with communities, organisations and individuals, helping them to become ready, willing and able to effectively support someone at risk of suicide, experiencing a mental health problem, or someone who self-harms. Their training, signposting, and innovation helps save lives by enabling the kind of conversations that can really make a difference. They constantly work to fight the stigma that surrounds suicide/mental health difficulties and encourage help-seeking through their thriving social media community and online presence.</p>
@@ -82,6 +123,7 @@
         </div>
         <div class="tile grassroots_color">
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Nob3emrSiXk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>Video about Grassroots previous work and 2019 GSK impact award</p>
         </div>
 
         <div class="tile amaze_color" id="amaze">
@@ -93,14 +135,17 @@
         </div>
         <div class="tile amaze_color">
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/G9-pkGkN_IY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>Video about the work Amaze does</p>
         </div>
 
         <div class="tile buglife_color" id="buglife">
             <h3 class="video_heading">Buglife</h3>
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/-EXInCMAwpY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>Video about why we are supporting Buglife</p>
         </div>
         <div class="tile buglife_color">
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/HKybGz5aLG4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>Video about Buglife's work</p>
         </div>
         <div class="tile buglife_color">
             <h3>About</h3>
@@ -127,40 +172,10 @@
         </div>
         <div class="tile buglife_color">
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xlnAwHjx3zs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-
-
-        <div class="tile donate_color" id="donate">
-            <h1 class="display-4">Donate</h1>
-            <p>There are <b>3 ways to donate:</b></p>
-        </div>
-        <div class="tile donate_color">
-            <h3>1. Donate</h3>
-            <p>You can donate to an automatically selected charity to help us balance the donations across all our chosen charities.</p>
-            <a class="btn btn-success" style="background: black; border: solid black" href="/donate/{{ support_challenge_id }}">Donate</a>
-        </div>
-        <div class="tile donate_color">
-            <h3>2. Donate to a particular charity:</h3>
-            <p>If you would rather donate to a charity of your choice you can use these buttons:</p>
-            <a class="btn btn-success" style="background: #dd7a34; border: solid #dd7a34" href="/donate/{{ support_challenge_id }}?charity=Grassroots">Donate to Grassroots Suicide Prevention</a>
-            <a class="btn btn-success" style="background: #8dc558; border: solid #8dc558" href="/donate/{{ support_challenge_id }}?charity=Amaze">Donate to Amaze</a>
-            <a class="btn btn-success" style="background: #3b4587; border: solid #3b4587; color: white" href="/donate/{{ support_challenge_id }}?charity=Buglife">Donate to Buglife</a>
-        </div>
-        <div class="tile donate_color">
-            <h3>3. Donate to a challenge:</h3>
-            <p>You can support a challenge by donating using the button on their challenge</p>
-            <a class="btn btn-info" href="/#challenges">Challenges</a>
+            <p>Video about one of Buglife's past projects</p>
         </div>
 
         <div style="width: 100%; height: 30px"></div>
-    </div>
-
-    <div class="bottom_menu" style="position: fixed; bottom: 0; width: 100%; min-height: 30px; display: flex; flex-flow: row wrap; background: #ffffff; justify-content: space-evenly; align-items: center">
-        <a class="link" style="color: #240340" href="#title">Info</a>
-        <a class="link" style="color: #dd7a34e0" href="#grassroots">Grassroots</a>
-        <a class="link" style="color: #8dc558e0" href="#amaze">Amaze</a>
-        <a class="link" style="color: #3b4587e0" href="#buglife">Buglife</a>
-        <a class="link" style="color: #7aa5d2" href="#donate">Donate</a>
     </div>
 
 
