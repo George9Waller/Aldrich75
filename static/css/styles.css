@@ -62,11 +62,16 @@ body {
 }
 
 .tile {
+    display: -webkit-flex;
     display: flex;
+    -webkit-justify-content: center;
     justify-content: center;
+    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
+    -webkit-align-items: stretch;
     align-items: stretch;
 
+    -webkit-flex: 1 0 auto;
     flex-grow: 1;
     margin: auto;
 
@@ -187,4 +192,8 @@ a.link {
 
 h3 {
     width: 100%;
+}
+
+iframe {
+    max-height: 200px;
 }
