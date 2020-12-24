@@ -49,7 +49,7 @@
                   </li>
                 </ul>
                   <div class="btn-group-sm">
-                      <a class="btn btn-outline-info btn-sm" href="{{ url_for('donation_options') }}">Donate</a>
+                      <a class="btn btn-outline-info btn-sm" href="/about?donate=0">Donate</a>
                       {% if not authenticated or not make_challenge %}
                           <a class="btn btn-outline-info btn-sm" href="{{ url_for('login') }}">Login</a>
                       {% else %}

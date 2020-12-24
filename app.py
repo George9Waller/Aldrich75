@@ -12,12 +12,13 @@ from flask_sslify import SSLify
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
+from urllib.parse import quote
 import models
 import forms
 # import users
 
 app = Flask(__name__)
-sslify = SSLify(app)
+# sslify = SSLify(app)
 
 try:
     import environment
@@ -326,7 +327,7 @@ def donate(challengeid):
                 charityid = 129035
             print('redirecting to link')
             message = request.form.get('Message')[:200]
-            message = message.replace(" ", "%20")
+            message = quote(message)
             print(message)
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
@@ -344,8 +345,10 @@ def donated():
         challengeid = request.args.get('challengeid')
         challenge = models.Challenge.get(models.Challenge.id == challengeid)
         message = request.args.get('message')
+        print(message)
 
         try:
+            pass
             models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message)
         except:
             flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
@@ -514,6 +517,8 @@ if __name__:
         models.Challenge.create(Participant=participant, Title='Raise Money For Charity', Description='Donate to this challenge if you just want to support this campaign and not a specific challenge')
     except:
         pass
+
+    # models.Donation.delete().where(models.Donation.message == 'Test Message').execute()
 
     try:
         task_time = datetime.datetime(2020, 11, 27, 8, 40, 0, 0)
