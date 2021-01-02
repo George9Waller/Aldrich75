@@ -135,7 +135,7 @@ def index():
     for donation in models.Donation.select():
         total += donation.Amount
 
-    startdate = datetime.date(2021, 1, 5)
+    startdate = datetime.date(2021, 1, 4)
     enddate = datetime.date(2021, 3, 19)
 
     today = datetime.date.today()
