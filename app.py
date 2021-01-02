@@ -348,11 +348,7 @@ def donated():
         message = request.args.get('message')
         print(message)
 
-        try:
-            message_string = models.TempMessage.select(models.TempMessage.Message).where(models.TempMessage.id == int(message))
-            models.TempMessage.delete().where(models.TempMessage.id == int(message)).execute()
-        except:
-            message_string = ''
+        message_string = models.TempMessage.select(models.TempMessage.Message).where(models.TempMessage.id == int(message))
 
         try:
             models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message_string)

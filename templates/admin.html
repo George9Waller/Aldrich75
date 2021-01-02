@@ -106,6 +106,7 @@
                             <div class="card-body">
                                 <p>Charity: {{ donation.Charity }}</p>
                                 <p>Amount: £{{ '%0.2f' % donation.Amount|float }}</p>
+                                <p>{{ donation.message }}</p>
                             </div>
                             <div class="card-footer">
                                 <small>{{ donation.Timestamp }}</small>
