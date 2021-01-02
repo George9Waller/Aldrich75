@@ -327,7 +327,8 @@ def donate(challengeid):
                 charityid = 129035
             print('redirecting to link')
             message = request.form.get('Message')[:200]
-            message = quote(message)
+            temp_message = models.TempMessage.create(Message=message)
+            message = temp_message.id
             print(message)
             return redirect('http://link.justgiving.com/v1/charity/donate/charityId/{}?amount={}&currency='
                             'GBP&reference=BC&exitUrl=https%3A%2F%2Fwww.aldrich75.co.uk%2Fdonated%3Famount%3D{}'
@@ -348,8 +349,13 @@ def donated():
         print(message)
 
         try:
-            pass
-            models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message)
+            message_string = models.TempMessage.select(models.TempMessage.Message).where(models.TempMessage.id == int(message))
+            models.TempMessage.delete().where(models.TempMessage.id == int(message)).execute()
+        except:
+            message_string = ''
+
+        try:
+            models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message_string)
         except:
             flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
             return redirect(url_for('index'))

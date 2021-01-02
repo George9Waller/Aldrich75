@@ -125,6 +125,15 @@ class Donation(Model):
         order_by = ('Charity',)
 
 
+class TempMessage(Model):
+    id = PrimaryKeyField()
+    Message = TextField()
+
+    class Meta:
+        database = DATABASE
+        order_by = ('id',)
+
+
 class BulkEmailTask(Model):
     id = PrimaryKeyField()
     Task_Name = CharField(unique=True)
@@ -142,6 +151,6 @@ def initialise():
     print('Database initialising')
     DATABASE.connect()
     # DATABASE.drop_tables([Donation])
-    DATABASE.create_tables([Participant, Challenge, BulkEmailTask, Donation], safe=True)
+    DATABASE.create_tables([Participant, Challenge, BulkEmailTask, Donation, TempMessage], safe=True)
     # DATABASE.execute_sql('ALTER TABLE participant ADD COLUMN "bulkemail" BOOLEAN DEFAULT TRUE')
     DATABASE.close()
