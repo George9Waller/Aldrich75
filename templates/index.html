@@ -109,7 +109,7 @@
                         <a class="btn btn-light btn-sm" href="https://www.endurancelife.com/sussex">Visit Site</a>
                 </div>
 
-                <div class="stat-element" style="background: {{ days_colour }}; color: black">
+                <div class="stat-element" style="background: {{ days_colour }}; color: white">
                     <p class="text-center"><b>{{ days }}</b></p>
                     <p style="font-size: small; margin-bottom: 0">{{ days_text }}</p>
                 </div>
@@ -126,31 +126,37 @@
                 </div>
 
                 {% if authenticated and days_text != 'Days until start' %}
+                    <div class="stat-element" style="background: white; color: black">
+                        <p class="text-center" style="font-size: x-large">Leaderboard</p>
+                    </div>
                     {% if challenge1 %}
                         <div class="stat-element">
-                            <p class="text-center" style="font-size: x-large"><b>1. {{ challenge1.Title }}</b></p>
+                            <p class="text-center" style="font-size: large"><b>1. {{ challenge1.Title }}</b></p>
                             <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge1.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge1.Participant.Name }}</p>
+                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge1.Participant.Name.split(' ')[0] }}</p>
+                            <a class="btn btn-sm btn-outline-light" style="margin-top: 10px" href="/donate/{{ challenge1.id }}">Donate</a>
                         </div>
                     {% endif %}
                     {% if challenge2 %}
                         <div class="stat-element">
-                            <p class="text-center" style="font-size: x-large"><b>2. {{ challenge2.Title }}</b></p>
+                            <p class="text-center" style="font-size: large"><b>2. {{ challenge2.Title }}</b></p>
                             <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge2.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge2.Participant.Name }}</p>
+                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge2.Participant.Name.split(' ')[0] }}</p>
+                            <a class="btn btn-sm btn-outline-light" style="margin-top: 10px" href="/donate/{{ challenge2.id }}">Donate</a>
                         </div>
                     {% endif %}
                     {% if challenge3 %}
                         <div class="stat-element" style="font-size: x-large">
-                            <p class="text-center"><b>3. {{ challenge3.Title }}</b></p>
+                            <p class="text-center" style="font-size: large"><b>3. {{ challenge3.Title }}</b></p>
                             <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge3.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge3.Participant.Name }}</p>
+                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge3.Participant.Name.split(' ')[0] }}</p>
+                            <a class="btn btn-sm btn-outline-light" style="margin-top: 10px" href="/donate/{{ challenge3.id }}">Donate</a>
                         </div>
                     {% endif %}
                 {% elif not authenticated and days_text != 'Days until start' %}
                     <div class="stat-element" style="background: black; color: white">
-                    <p class="text-center" style="font-size: medium"><i class="fas fa-lock"></i> Login required for leaderboard</p>
-                </div>
+                        <p class="text-center" style="font-size: medium"><i class="fas fa-lock"></i> Login required for leaderboard</p>
+                    </div>
                 {% endif %}
 
             </div>

@@ -152,7 +152,7 @@ def index():
 
     progress = int((total / 7500) * 100)
 
-    ordered_challenges = models.Challenge.select().order_by(models.Challenge.MoneyRaised.asc())
+    ordered_challenges = models.Challenge.select().order_by(models.Challenge.MoneyRaised.desc())
     challenge1 = None
     challenge2 = None
     challenge3 = None
