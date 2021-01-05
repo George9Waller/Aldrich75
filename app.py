@@ -129,8 +129,9 @@ def index():
     met_challenges = 0
     for challenge in challenges:
         money = challenge.MoneyRaised
-        if money >= 75:
-            met_challenges += 1
+        if challenge.id != 1:
+            if money >= 75:
+                met_challenges += 1
 
     for donation in models.Donation.select():
         total += donation.Amount
@@ -152,15 +153,12 @@ def index():
 
     progress = int((total / 7500) * 100)
 
-    ordered_challenges = models.Challenge.select().order_by(models.Challenge.MoneyRaised.desc())
-    challenge1 = None
-    challenge2 = None
-    challenge3 = None
+    ordered_challenges = models.Challenge.select().where(models.Challenge.id != 1)\
+        .order_by(models.Challenge.MoneyRaised.desc())
+    topChallenges = []
 
     try:
-        challenge1 = ordered_challenges[0]
-        challenge2 = ordered_challenges[1]
-        challenge3 = ordered_challenges[2]
+        topChallenges = ordered_challenges[:5]
     except:
         pass
 
@@ -193,10 +191,9 @@ def index():
 
     resp = make_response(render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
                                          days_colour=colour, days_text=days_text, authenticated=authenticated,
-                                         challenges=challenges, progress=progress, challenge1=challenge1,
-                                         challenge2=challenge2, challenge3=challenge3, my_challenges=my_challenges,
-                                         support_challenge_id=support_challenge.id, popup=popup,
-                                         make_challenge=make_challenge, donations=donations))
+                                         challenges=challenges, progress=progress, topChallenges=topChallenges,
+                                         my_challenges=my_challenges, support_challenge_id=support_challenge.id,
+                                         popup=popup, make_challenge=make_challenge, donations=donations))
 
     if not popup:
         resp.set_cookie('first', 'True', max_age=15552000)
@@ -369,7 +366,7 @@ def donated():
 @app.route('/admin')
 def admin():
     if check_authenticated_admin():
-        users = models.Participant.get_participants().order_by(models.Participant.Email)
+        users = models.Participant.get_participants().order_by(models.Participant.id)
         challenges = models.Challenge.get_challenges().order_by(models.Challenge.Participant)
 
         grassrootstotal = 0
@@ -530,18 +527,10 @@ if __name__:
     except:
         pass
 
-    # try:
-    #     for user in users.get_users():
-    #         try:
-    #             name = user[2] + ' ' + user[0]
-    #             print(name)
-    #             models.Participant.create_participant(name, user[4])
-    #         except:
-    #             pass
-    # except:
-    #     pass
-
-    # models.BulkEmailTask.update({models.BulkEmailTask.Done: False}).execute()
+    # models.Participant.update({models.Participant.Name: 'Miss\tT-W'}).where(models.Participant.id == 1199).execute()
+    # models.Participant.update({models.Participant.Name: 'Miss\tWilkins'}).where(models.Participant.id == 877).execute()
+    # models.Participant.update({models.Participant.Name: 'Mrs\tWalker'}).where(models.Participant.id == 876).execute()
+    # models.Participant.update({models.Participant.Name: 'Mr\tWebster'}).where(models.Participant.id == 905).execute()
 
     # Bulk Email scheduler
     # scheduler = BackgroundScheduler()

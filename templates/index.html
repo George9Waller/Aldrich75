@@ -90,7 +90,7 @@
 {#                <div class="alert alert-primary">Please login to increase permissions: <b><a href="{{ url_for('login') }}">login</a></b></div>#}
 {#            {% endif %}#}
 
-            <div style="display: flex; flex-flow: row wrap">
+            <div class="mygrid">
 
                 <div class="stat-element" style="background-image: linear-gradient(45deg, #dd7a34 16.67%, #8dc558 16.67%, #8dc558 33.33%, #3b4587 33.33%, #3b4587 50%, #dd7a34 50%, #dd7a34 66.67%, #8dc558 66.67%, #8dc558 83.33%, #3b4587 83.33%, #3b4587 100%); background-size: 212.13px 212.13px; color: black; display: flex; justify-content: center; align-items: center">
                     <a href="{{ url_for('about') }}" style="color: white">Charity Info</a>
@@ -129,30 +129,17 @@
                     <div class="stat-element" style="background: white; color: black">
                         <p class="text-center" style="font-size: x-large">Leaderboard</p>
                     </div>
-                    {% if challenge1 %}
-                        <div class="stat-element">
-                            <p class="text-center" style="font-size: large"><b>1. {{ challenge1.Title }}</b></p>
-                            <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge1.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge1.Participant.Name.split(' ')[0] }}</p>
-                            <a class="btn btn-sm btn-outline-light" style="margin-top: 10px" href="/donate/{{ challenge1.id }}">Donate</a>
+                    {% for challenge in topChallenges %}
+                        <div class="stat-element" style="color: grey; background-color: white">
+                            <p class="text-center" style="font-size: large;"><b>{{ loop.index }}: {{ challenge.Title }}</b></p>
+                            <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge.MoneyRaised|float }}</p>
+                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge.Participant.Name.split(' ')[0] }}</p>
+                            <div style="display: flex; flex-direction: row">
+                                <a class="btn btn-sm btn-outline-dark" style="margin-top: 10px" href="#challenge-{{ challenge.id }}">Go To</a>
+                                <a class="btn btn-sm btn-primary" style="margin-top: 10px" href="/donate/{{ challenge.id }}">Donate</a>
+                            </div>
                         </div>
-                    {% endif %}
-                    {% if challenge2 %}
-                        <div class="stat-element">
-                            <p class="text-center" style="font-size: large"><b>2. {{ challenge2.Title }}</b></p>
-                            <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge2.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge2.Participant.Name.split(' ')[0] }}</p>
-                            <a class="btn btn-sm btn-outline-light" style="margin-top: 10px" href="/donate/{{ challenge2.id }}">Donate</a>
-                        </div>
-                    {% endif %}
-                    {% if challenge3 %}
-                        <div class="stat-element" style="font-size: x-large">
-                            <p class="text-center" style="font-size: large"><b>3. {{ challenge3.Title }}</b></p>
-                            <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge3.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge3.Participant.Name.split(' ')[0] }}</p>
-                            <a class="btn btn-sm btn-outline-light" style="margin-top: 10px" href="/donate/{{ challenge3.id }}">Donate</a>
-                        </div>
-                    {% endif %}
+                    {% endfor %}
                 {% elif not authenticated and days_text != 'Days until start' %}
                     <div class="stat-element" style="background: black; color: white">
                         <p class="text-center" style="font-size: medium"><i class="fas fa-lock"></i> Login required for leaderboard</p>
@@ -167,7 +154,7 @@
         <div class="section" id="">
             <h2>4 Most Recent donations</h2>
             <a class="btn btn-sm btn-info" href="#alldonations">All donations</a>
-            <div style="display: flex; flex-flow: row wrap">
+            <div class="mygrid">
                 {% for donation in donations[:4] %}
                     <div class="card" style="width: 18rem">
                         {% if donation.Charity == 'Grassroots' %}
@@ -214,10 +201,10 @@
                 <a href="{{ url_for('login') }}" class="btn btn-info">Login to create a challenge</a>
             {% endif %}
 
-            <div style="display: flex; flex-flow: row wrap">
+            <div class="mygrid">
 
                 {% for challenge in challenges %}
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: 18rem;" id="challenge-{{ challenge.id }}">
                         {% if challenge.URL != '' %}
                             {% if authenticated %}
                                 <iframe width="286" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="background: black"></iframe>
@@ -257,7 +244,7 @@
 
         <div class="section" id="">
             <h2>All donations</h2>
-            <div style="display: flex; flex-flow: row wrap">
+            <div class="mygrid">
                 {% for donation in donations %}
                     <div class="card" style="width: 18rem">
                         {% if donation.Charity == 'Grassroots' %}

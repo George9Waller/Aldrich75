@@ -36,6 +36,12 @@ body {
     }
 }
 
+.mygrid {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
 .section {
     width: 90%;
     min-width: 400px;
