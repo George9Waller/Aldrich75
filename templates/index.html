@@ -123,7 +123,8 @@
                         <div class="mygrid">
                             <div class="stat-element" style="display: flex; flex-direction: column; background: #508AA899">
                                 <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Total</p>
-                                <p class="text-center" style="font-size: 40px"><b>£{{ '%0.0f' % total|float }}</b></p>
+                                <p class="text-center" style="font-size: 40px"><b>£{{ '%0.0f' % total|float }}</b><span style="font-weight: 200;">*</span></p>
+                                <p style="position: absolute; bottom: 0; font-size: x-small; font-weight: lighter; color: #00000066">*this assumes 85% donations qualified for gift aid</p>
                             </div>
                             <div class="stat-element" style="display: flex; flex-direction: column; background: #B2CEDE99">
                                 <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Challenges raising £75 or more</p>
@@ -135,7 +136,8 @@
                             </div>
                             <div class="stat-element" style="display: flex; flex-direction: column; background: #6DC0D599">
                                 <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Raised in the last 7 days</p>
-                                <p class="text-center" style="font-size: 40px"><b>£{{ '%0.0f' % total_weekly|float }}</b></p>
+                                <p class="text-center" style="font-size: 40px"><b>£{{ '%0.0f' % total_weekly|float }}</b><span style="font-weight: 200;">*</span></p>
+                                <p style="position: absolute; bottom: 0; font-size: x-small; font-weight: lighter; color: #00000066">*this assumes 85% donations qualified for gift aid</p>
                             </div>
                         </div>
                     </div>
@@ -396,7 +398,7 @@
                       <br>
                       <p>Alternatively you can just donate to challenge(s) of your choice or the campaign as a whole</p>
                       <br>
-                      <p>All totals are estimated assuming 75% of the value donated is paid with gift aid. If a total of £1000 was donated then we assume gift aid was paid on £750 of donations for an estimated total of £1188.</p>
+                      <p>All totals are estimated assuming 85% of donations qualify for gift aid.</p>
                   </div>
                   <div class="modal-footer">
                       <small>You are seeing this because we think this is your first time on the site (or at least just on this browser)</small>

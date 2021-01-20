@@ -195,8 +195,8 @@ def index():
     donations = models.Donation.select().order_by(models.Donation.Timestamp.desc())
 
     # Assuming 75% of donations have gift aid
-    total = float(total) + ((0.75 * float(total)) * 0.25)
-    total_weekly = float(total_weekly) + ((0.75 * float(total_weekly)) * 0.25)
+    total = float(total) + ((0.85 * float(total)) * 0.25)
+    total_weekly = float(total_weekly) + ((0.85 * float(total_weekly)) * 0.25)
     progress = int((total / 7500) * 100)
 
     resp = make_response(render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
