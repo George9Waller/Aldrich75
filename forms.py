@@ -1,6 +1,6 @@
 import peewee
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, SelectField
+from wtforms import StringField, DecimalField, SelectField, TextAreaField
 
 from wtforms.validators import DataRequired, Length, ValidationError
 from models import Participant
@@ -59,7 +59,7 @@ class NewChallenge(FlaskForm):
         ]
     )
 
-    Description = StringField(
+    Description = TextAreaField(
         'Challenge Description',
         validators=[
             Length(max=250, message="Description must be max 250 characters")

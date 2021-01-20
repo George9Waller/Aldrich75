@@ -71,14 +71,21 @@
             </div>
         </header>
 
-        <div class="progress" style="height: 40px">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%; height: 40px">£{{ total|int }} / £7500</div>
+        <div style="height: 160px; display: flex; justify-content: center; padding: 20px">
+            <div id="flipdown" class="flipdown" style="background: white; padding: 10px; border-radius: 10px; width: 540px; height: 130px"></div>
         </div>
 
-        <div style="visibility: hidden; height: 0; display: block; padding-top: 40px" id="info"></div>
+        <div class="progress" style="height: 40px; border-radius: 0; position: sticky; background: #00000000">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%;">£{{ total|int }} / £7500</div>
+        </div>
 
-        <div class="section">
-            <h2>Info</h2>
+        <div class="section" style="height: 60px; display: block;" id="info">
+            <div>
+                <h2 class="section-title">Info</h2>
+            </div>
+        </div>
+
+        <div class="section" style="">
 
 {#            {% if authenticated or make_challenge %}#}
 {#                <div class="alert alert-dark">Authenticated: You can {% if make_challenge %}make challenges{% endif %}{% if authenticated %} & view restricted data{% endif %} | <a href="{{ url_for('logout') }}">Logout</a></div>#}
@@ -92,16 +99,18 @@
 
             <div class="mygrid">
 
-                <div class="stat-element" style="background-image: linear-gradient(45deg, #dd7a34 16.67%, #8dc558 16.67%, #8dc558 33.33%, #3b4587 33.33%, #3b4587 50%, #dd7a34 50%, #dd7a34 66.67%, #8dc558 66.67%, #8dc558 83.33%, #3b4587 83.33%, #3b4587 100%); background-size: 212.13px 212.13px; color: black; display: flex; justify-content: center; align-items: center">
-                    <a href="{{ url_for('about') }}" style="color: white">Charity Info</a>
+                <div class="stat-element" style="background-image: linear-gradient(45deg, #dd7a34 16.67%, #8dc558 16.67%, #8dc558 33.33%, #3b4587 33.33%, #3b4587 50%, #dd7a34 50%, #dd7a34 66.67%, #8dc558 66.67%, #8dc558 83.33%, #3b4587 83.33%, #3b4587 100%); background-size: 212.13px 212.13px;">
+                    <div style="padding: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 10px">
+                        <a href="{{ url_for('about') }}" style="color: white;">Charity Info</a>
+                    </div>
                 </div>
 
-                <div class="stat-element" style="background: #28a745; color: black; font-size: small">
-                        <p style="font-size: medium; color: white"><b>Support #My75:</b></p>
+                <div class="stat-element" style="background: #28a745;">
+                        <p style="color: white"><b>Support #My75:</b></p>
                         <a class="btn btn-light" href="/about?donate=0">Donate</a>
                 </div>
 
-                <div class="stat-element" style="background: #ffffff; color: black; font-size: small">
+                <div class="stat-element" style="color: black; font-size: small; font-weight: normal; display: flex; flex-direction: column">
                         <img src="/static/img/EnduranceLifeLogo.png" style="width: 150px; position: relative; top: 0; left: 0" alt="Endurance Life Logo">
                         <p style="font-size: small"><b>Sussex Run</b></p>
                         <p style="font-size: x-small">Many of the Aldrich boys and staff are using the world famous Seven Sisters marathon, half-marathon or 10k, to raise money fo the cause. The iconic coastal run coincides with the culmination of the #My75 challenge on 20th March 2021.</p>
@@ -109,130 +118,208 @@
                         <a class="btn btn-light btn-sm" href="https://www.endurancelife.com/sussex">Visit Site</a>
                 </div>
 
-                <div class="stat-element" style="background: {{ days_colour }}; color: white">
-                    <p class="text-center"><b>{{ days }}</b></p>
-                    <p style="font-size: small; margin-bottom: 0">{{ days_text }}</p>
-                </div>
-
-                <div class="stat-element">
-                    <p class="text-center"><b>£{{ '%0.2f' % total|float }}</b></p>
-                    {% set total = total|float * 1.25 %}
-                    <p style="font-size: small; margin-bottom: 0">Total (Upto £{{ '%0.2f' % total|float }} including Gift-Aid)</p>
-                </div>
-
-                <div class="stat-element">
-                    <p class="text-center"><b>{{ met_challenges }}</b></p>
-                    <p style="font-size: small; margin-bottom: 0">Challenges meeting £75 target</p>
+                <div class="stat-element" style="width: 60vw">
+                    <div style="display: flex; flex-direction: column;">
+                        <div class="mygrid">
+                            <div class="stat-element" style="display: flex; flex-direction: column; background: #508AA899">
+                                <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Total</p>
+                                <p class="text-center" style="font-size: 40px"><b>£{{ '%0.0f' % total|float }}</b></p>
+                            </div>
+                            <div class="stat-element" style="display: flex; flex-direction: column; background: #B2CEDE99">
+                                <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Challenges raising £75 or more</p>
+                                <p class="text-center" style="font-size: 40px"><b>{{ met_challenges }}</b></p>
+                            </div>
+                            <div class="stat-element" style="display: flex; flex-direction: column; background: #8CDFD699">
+                                <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Challenges raising money</p>
+                                <p class="text-center" style="font-size: 40px"><b>{{ challenges_raising }}</b></p>
+                            </div>
+                            <div class="stat-element" style="display: flex; flex-direction: column; background: #6DC0D599">
+                                <p style="font-size: small; margin-bottom: 0; margin-top: 3px">Raised in the last 7 days</p>
+                                <p class="text-center" style="font-size: 40px"><b>£{{ '%0.0f' % total_weekly|float }}</b></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {% if authenticated and days_text != 'Days until start' %}
-                    <div class="stat-element" style="background: white; color: black">
+                    <div class="stat-element" style="color: black; width: 60vw">
                         <p class="text-center" style="font-size: x-large">Leaderboard</p>
-                    </div>
-                    {% for challenge in topChallenges %}
-                        <div class="stat-element" style="color: grey; background-color: white">
-                            <p class="text-center" style="font-size: large;"><b>{{ loop.index }}: {{ challenge.Title }}</b></p>
-                            <p style="font-size: small; margin-bottom: 0">£{{ '%0.2f' % challenge.MoneyRaised|float }}</p>
-                            <p style="font-size: small; margin-bottom: 0">By: {{ challenge.Participant.Name.split(' ')[0] }}</p>
-                            <div style="display: flex; flex-direction: row">
-                                <a class="btn btn-sm btn-outline-dark" style="margin-top: 10px" href="#challenge-{{ challenge.id }}">Go To</a>
-                                <a class="btn btn-sm btn-primary" style="margin-top: 10px" href="/donate/{{ challenge.id }}">Donate</a>
-                            </div>
+
+                        <div class="mygrid">
+                            {% for challenge in topChallenges %}
+                                <div class="stat-element" style="width: 200px; display:flex; flex-direction: column;">
+                                    <p style="font-size: medium; margin-bottom: 0; margin-top: 3px">{{ challenge.Title }} <span style="font-size: small; color: #00000099">by {{ challenge.Participant.Name.split(' ')[0] }}</span></p>
+                                    <div style=" color: black; width: 150px; display: flex; flex-direction: column; justify-content: center; padding: 20px; background: #B2CEDE44; border-radius: 10px; margin: 10px">
+                                        <p style="font-size: medium; margin-bottom: 0; margin-top: 3px">£{{ '%0.0f' % challenge.MoneyRaised|float }}</p>
+                                        <a class="btn btn-sm btn-light" style="" href="#challenge-{{ challenge.id }}">Go To</a>
+                                        <a class="btn btn-sm btn-primary" style="" href="/donate/{{ challenge.id }}">Donate</a>
+                                    </div>
+
+                                    {% if authenticated %}
+                                        {% if challenge.id in my_challenges %}
+                                            <a href="/admin/edit/challenge/{{ challenge.id }}" class="btn btn-dark">Edit</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+{#                                <div class="card" style="width: 250px;" id="">#}
+{#                                <div class="card-body" style="margin-bottom: 40px;">#}
+{#                                    <h4>{{ loop.index }}: {{ challenge.Title }}</h4>#}
+{#        #}
+{#                                    <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name.split(' ')[0] }}</h6>#}
+{#                                    <a class="btn btn-sm btn-light" style="width: 100px" href="#challenge-{{ challenge.id }}">Go To</a>#}
+{#        #}
+{#                                    {% if authenticated %}#}
+{#                                        {% if challenge.id in my_challenges %}#}
+{#                                            <a href="/admin/edit/challenge/{{ challenge.id }}" class="btn btn-dark">Edit</a>#}
+{#                                        {% endif %}#}
+{#                                    {% endif %}#}
+{#                                    <div style="position: absolute; bottom: 0; right: 0; display: flex; justify-content: flex-end; flex-direction: column; font-size: 5px; width: 100px; margin-top: 5px">#}
+{#                                        <a class="btn btn-primary" style="" href="/donate/{{ challenge.id }}">Donate</a>#}
+{#                                    </div>#}
+{#                                    <div style="position: absolute; bottom: 0; left: 5px; display: flex; justify-content: flex-end; flex-direction: column; font-size: 15px">#}
+{#                                        <p style="font-size: 30px; margin-bottom: 0; font-weight: bold">£{{ '%0.0f' % challenge.MoneyRaised|float }}</p>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+                            {% endfor %}
                         </div>
-                    {% endfor %}
+                    </div>
                 {% elif not authenticated and days_text != 'Days until start' %}
-                    <div class="stat-element" style="background: black; color: white">
-                        <p class="text-center" style="font-size: medium"><i class="fas fa-lock"></i> Login required for leaderboard</p>
+                    <div class="stat-element" style="">
+                        <p class="text-center" style="font-size: medium">Leaderboard <i class="fas fa-lock"></i></p>
                     </div>
                 {% endif %}
 
             </div>
         </div>
 
-        <div style="visibility: hidden; height: 0; display: block; padding-top: 40px" id="recentdonations"></div>
+        <div style="visibility: hidden; height: 0; display: block; padding-top: 0" id="recentdonations"></div>
 
-        <div class="section" id="">
-            <h2>4 Most Recent donations</h2>
-            <a class="btn btn-sm btn-info" href="#alldonations">All donations</a>
+        <div class="section" id="recentdonationssection">
+
+            <h2 class="section-title"><span style="background: #7aa5d2; padding: 2px; border-radius: 10px">Most Recent donations</span></h2>
+
             <div class="mygrid">
                 {% for donation in donations[:4] %}
-                    <div class="card" style="width: 18rem">
+                    <div class="card" style="width: 250px">
                         {% if donation.Charity == 'Grassroots' %}
                             {% set colour = 'black' %}
-                            {% set bgcolour = '#dd7a34' %}
+                            {% set bgcolour = '#dd7a3499' %}
                         {% elif donation.Charity == 'Amaze' %}
                             {% set colour = 'black' %}
-                            {% set bgcolour = '#8dc558' %}
+                            {% set bgcolour = '#8dc55899' %}
                         {% elif donation.Charity == 'Buglife' %}
-                            {% set bgcolour = '#3b4587' %}
+                            {% set bgcolour = '#3b458799' %}
                             {% set colour = 'white' %}
                         {% else %}
-                            {% set bgcolour = '#00000008' %}
+                            {% set bgcolour = '#ffffff99' %}
                             {% set colour = 'black' %}
                         {% endif %}
-                        <div class="card-header" style="background: {{ bgcolour }}; color: {{ colour }}">
-                            <h5 class="card-title">£{{ '%0.2f' % donation.Amount|float }}</h5>
-                        </div>
-                        <div class="card-body">
+{#                        <div class="card-header" style="background: {{ bgcolour }}; color: {{ colour }}">#}
+{#                            <h5 class="card-title">£{{ '%0.2f' % donation.Amount|float }}</h5>#}
+{#                        </div>#}
+                        <div class="card-body" style="background: {{ bgcolour }}">
                             {% if donation.message != '' and donation.message != none %}
-                                <p>{{ donation.message }}</p>
+                                <p style="font-size: 25px">{{ donation.message }}</p>
                             {% else %}
-                                <small><i>No message left</i></small>
-                                <br>
+                                <p style="font-size: 15px">No message left</p>
                             {% endif %}
-                            <small>Donated to: {{ donation.Charity }}</small>
-                        </div>
-                        <div class="card-footer">
-                            {% set timestamp = donation.Timestamp|string %}
-                            <small>{{ timestamp|truncate(19, killwords=False, end='') }}</small>
+                            <div style="position: absolute; bottom: 0; right: 5px; display: flex; justify-content: flex-end; flex-direction: column; font-size: 5px">
+                                <p style="font-size: 30px; margin-bottom: 0; font-weight: bold">£{{ '%0.0f' % donation.Amount|float }}</p>
+                            </div>
+                            <div style="position: absolute; bottom: 5px; left: 5px; display: flex; justify-content: flex-end; flex-direction: column; font-size: 15px">
+                                {% set timestamp = donation.Timestamp|string %}
+                                <small>{{ timestamp|truncate(19, killwords=False, end='') }}</small>
+                            </div>
+
                         </div>
                     </div>
                 {% endfor %}
+                <div class="card" style="width: 250px">
+                    <div class="card-body" style="background: #ffffff99">
+                        <p style="font-size: 25px">See all donations</p>
+                        <a class="btn btn-outline-dark" href="#alldonations">↓↓↓</a>
+
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div style="visibility: hidden; height: 0; display: block; padding-top: 40px" id="challenges"></div>
+        <div class="section" style="height: 60px; display: block;" id="challenges">
+            <div>
+                <h2 class="section-title">Challenges</h2>
+            </div>
+        </div>
 
-        <div class="section" id="">
-            <h2>Challenges</h2>
-            {% if make_challenge %}
-                <a href="{{ url_for('create_challenge') }}" class="btn btn-primary">Add challenge</a>
-            {% else %}
-                <a href="{{ url_for('login') }}" class="btn btn-info">Login to create a challenge</a>
-            {% endif %}
+        <div class="section" id="challenges-grid">
 
             <div class="mygrid">
 
+                <div class="card" style="width: 14rem">
+                    <div class="card-body" style="background: #ffffff99; display: flex; align-items: center">
+                        {% if make_challenge %}
+                            <a href="{{ url_for('create_challenge') }}" class="btn btn-primary">Add challenge</a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}" class="btn btn-info">Login to create a challenge</a>
+                        {% endif %}
+
+                    </div>
+                </div>
+
                 {% for challenge in challenges %}
-                    <div class="card" style="width: 18rem;" id="challenge-{{ challenge.id }}">
+                        {% if challenge.MoneyRaised|float == 0.0 %}
+                            {% set bgcolour = '#ffffff99' %}
+                        {% elif 0.0 < challenge.MoneyRaised|float < 20 %}
+                            {% set bgcolour = '#a8dadc99' %}
+                        {% elif 20 <= challenge.MoneyRaised|float < 40 %}
+                            {% set bgcolour = '#ffcad499' %}
+                        {% elif 40 <= challenge.MoneyRaised|float < 60 %}
+                            {% set bgcolour = '#e07a5f99' %}
+                        {% elif 60 <= challenge.MoneyRaised|float < 75 %}
+                            {% set bgcolour = '#48caef99' %}
+                        {% elif 75 <= challenge.MoneyRaised|float < 100 %}
+                            {% set bgcolour = '#cdb4db99' %}
+                        {% elif 100 <= challenge.MoneyRaised|float < 150 %}
+                            {% set bgcolour = '#dd6e4299' %}
+                        {% elif 150 <= challenge.MoneyRaised|float < 200 %}
+                            {% set bgcolour = '#4c956c99' %}
+                        {% elif challenge.MoneyRaised|float >= 200 %}
+                            {% set bgcolour = '#80a1d499' %}
+                        {% else %}
+                            {% set bgcolour = '#ffffff99' %}
+                        {% endif %}
+
+                    <div class="card" style="width: 14rem; background: {{ bgcolour }} !important" id="challenge-{{ challenge.id }}">
                         {% if challenge.URL != '' %}
                             {% if authenticated %}
-                                <iframe width="286" height="200" src="{{ challenge.URL }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="background: black"></iframe>
+                                <iframe width="224" height="200" src="{{ challenge.URL }}" scrolling="no" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="background: black; border-top-left-radius: 10px; border-top-right-radius: 10px"></iframe>
                             {% else %}
-                                <div class="card-img-top" style="background: rgba(0, 0, 0, 200); width: 100%; height: 30px">
-                                    <p style="color: white" class="text-center"><a href="{{ url_for('login') }}" style="color: white"><i class="fas fa-lock"></i> Extra login required for videos</a></p>
+                                <div class="card-img-top" style="background: inherit; width: 100%; height: 30px; border-top-left-radius: 10px; border-top-right-radius: 10px">
+                                    <p class="text-center"><a href="{{ url_for('login') }}" style="color: black"><i class="fas fa-lock"></i> Login for videos</a></p>
                                 </div>
                             {% endif %}
                         {% endif %}
-                        <div class="card-img-top" style="background: #090035; width: 100%; padding: 10px">
-                            <h5 class="card-title" style="color: white">{{ challenge.Title }}</h5>
-                        </div>
-                        <div class="card-body">
+
+                        <div class="card-body" style="margin-bottom: 40px;">
+                            <h4>{{ challenge.Title }}</h4>
+
+                            <p class="card-text">{{ challenge.Description }}</p>
                             {% if authenticated %}
                                 <h6 class="card-subtitle mb-2 text-muted">{{ challenge.Participant.Name.split(' ')[0] }}</h6>
                             {% endif %}
-                            <p class="card-text">{{ challenge.Description }}</p>
-                            <p><b>Raised: £{{ '%0.2f' % challenge.MoneyRaised|float }}</b></p>
-
-{#                            <span class="d-inline-block" data-toggle="popover" data-content="Donation coming soon">#}
-                                <a class="btn btn-primary" style="" href="/donate/{{ challenge.id }}">Donate</a>
-{#                            </span>#}
 
                             {% if authenticated %}
                                 {% if challenge.id in my_challenges %}
                                     <a href="/admin/edit/challenge/{{ challenge.id }}" class="btn btn-dark">Edit</a>
                                 {% endif %}
                             {% endif %}
+                            <div style="position: absolute; bottom: 0; right: 0; display: flex; justify-content: flex-end; flex-direction: column; font-size: 5px; width: 100px; margin-top: 5px">
+                                <a class="btn btn-primary" style="" href="/donate/{{ challenge.id }}">Donate</a>
+                            </div>
+                            <div style="position: absolute; bottom: 0; left: 5px; display: flex; justify-content: flex-end; flex-direction: column; font-size: 15px">
+                                <p style="font-size: 30px; margin-bottom: 0; font-weight: bold">£{{ '%0.0f' % challenge.MoneyRaised|float }}</p>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -240,41 +327,46 @@
             </div>
         </div>
 
-        <div style="visibility: hidden; height: 0; display: block; padding-top: 40px" id="alldonations"></div>
+        <div class="section" style="height: 60px; display: block;" id="alldonations">
+            <div>
+                <h2 class="section-title">All Donations</h2>
+            </div>
+        </div>
 
         <div class="section" id="">
-            <h2>All donations</h2>
             <div class="mygrid">
                 {% for donation in donations %}
-                    <div class="card" style="width: 18rem">
+                    <div class="card" style="width: 200px">
                         {% if donation.Charity == 'Grassroots' %}
                             {% set colour = 'black' %}
-                            {% set bgcolour = '#dd7a34' %}
+                            {% set bgcolour = '#dd7a3499' %}
                         {% elif donation.Charity == 'Amaze' %}
                             {% set colour = 'black' %}
-                            {% set bgcolour = '#8dc558' %}
+                            {% set bgcolour = '#8dc55899' %}
                         {% elif donation.Charity == 'Buglife' %}
-                            {% set bgcolour = '#3b4587' %}
+                            {% set bgcolour = '#3b458799' %}
                             {% set colour = 'white' %}
                         {% else %}
-                            {% set bgcolour = '#00000008' %}
+                            {% set bgcolour = '#ffffff99' %}
                             {% set colour = 'black' %}
                         {% endif %}
-                        <div class="card-header" style="background: {{ bgcolour }}; color: {{ colour }}">
-                            <h5 class="card-title">£{{ '%0.2f' % donation.Amount|float }}</h5>
-                        </div>
-                        <div class="card-body">
+{#                        <div class="card-header" style="background: {{ bgcolour }}; color: {{ colour }}">#}
+{#                            <h5 class="card-title">£{{ '%0.2f' % donation.Amount|float }}</h5>#}
+{#                        </div>#}
+                        <div class="card-body" style="background: {{ bgcolour }}">
                             {% if donation.message != '' and donation.message != none %}
-                                <p>{{ donation.message }}</p>
+                                <p style="font-size: 15px">{{ donation.message }}</p>
                             {% else %}
-                                <small><i>No message left</i></small>
-                                <br>
+                                <p style="font-size: 12px">No message left</p>
                             {% endif %}
-                            <small>Donated to: {{ donation.Charity }}</small>
-                        </div>
-                        <div class="card-footer">
-                            {% set timestamp = donation.Timestamp|string %}
-                            <small>{{ timestamp|truncate(19, killwords=False, end='') }}</small>
+                            <div style="position: absolute; bottom: 0; right: 5px; display: flex; justify-content: flex-end; flex-direction: column; font-size: 5px">
+                                <p style="font-size: 25px; margin-bottom: 0; font-weight: bold">£{{ '%0.0f' % donation.Amount|float }}</p>
+                            </div>
+                            <div style="position: absolute; bottom: 5px; left: 5px; display: flex; justify-content: flex-end; flex-direction: column; font-size: 15px">
+                                {% set timestamp = donation.Timestamp|string %}
+                                <small>{{ timestamp|truncate(19, killwords=False, end='') }}</small>
+                            </div>
+
                         </div>
                     </div>
                 {% endfor %}
@@ -330,9 +422,14 @@
             })
         </script>
 
+        <script type="text/javascript" src="../static/js/flipdown.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../static/css/flipdown.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
         $(document).ready(function(){
+            //start flipclock
+            new FlipDown(1616198399).start();
+
           // Add smooth scrolling to all links
           $("a").on('click', function(event) {
 

@@ -38,7 +38,7 @@
             <a class="link" href="{{ url_for('index') }}"><i class="fas fa-home"></i></a>
             <a class="link" style="color: #7aa5d2" href="#donate">Donate</a>
             <i class="fas fa-angle-right"></i>
-            <a class="link" style="color: #240340" href="#title">Info</a>
+            <a class="link" style="color: #240340" href="#info">Info</a>
             <i class="fas fa-angle-right"></i>
             <a class="link" style="color: #dd7a34e0" href="#grassroots">Grassroots</a>
             <i class="fas fa-angle-right"></i>
@@ -47,136 +47,180 @@
             <a class="link" style="color: #3b4587e0" href="#buglife">Buglife</a>
         </div>
 
-    <div style="display: flex; flex-flow: column; justify-content: stretch; align-items: stretch; -webkit-align-items: stretch; width: 100%; position: absolute; -webkit-flex-flow: column; display: -webkit-flex; -webkit-justify-content: space-around">
-        <div class="tile" style="background: #7aa5d2;" id="title">
-            <a class="btn home" href="{{ url_for('index') }}" style="padding: 5px; color: white">
-                <h1 class="text-center display-2">Aldrich 75</h1>
-                <p class="text-center">Click to visit site</p>
+        <div class="section" style="background: #7aa5d2">
+            <div class="stat-element" style="width: 80vw; margin: auto; margin-top: 40px;">
+                <a class="btn home" href="{{ url_for('index') }}" style="padding: 5px; color: white">
+                <h1 class="text-center display-3">Aldrich 75</h1>
+                <p class="text-center">Click to return to site</p>
             </a>
-        </div>
-
-        <div class="tile donate_color" id="donate" style="flex-flow: column">
-            <div>
-                <h1 class="display-4">Donate</h1>
             </div>
+        </div>
+
+        <div class="section" style="height: 60px; display: block; background: #4a5568" id="donate">
             <div>
-                <p>There are <b>3 ways to donate:</b></p>
+                <h2 class="section-title">Ways to donate</h2>
             </div>
-
-        </div>
-        <div class="tile donate_color">
-            <h3>1. Donate</h3>
-            <p>You can donate to an automatically selected charity to help us balance the donations across all our chosen charities.</p>
-            <a class="btn btn-success" style="background: black; border: solid black" href="/donate/{{ support_challenge_id }}">Donate</a>
-        </div>
-        <div class="tile donate_color">
-            <h3>2. Donate to a particular charity:</h3>
-            <p>If you would rather donate to a charity of your choice you can use these buttons:</p>
-            <a class="btn btn-success" style="background: #dd7a34; border: solid #dd7a34" href="/donate/{{ support_challenge_id }}?charity=Grassroots">Donate to Grassroots Suicide Prevention</a>
-            <a class="btn btn-success" style="background: #8dc558; border: solid #8dc558" href="/donate/{{ support_challenge_id }}?charity=Amaze">Donate to Amaze</a>
-            <a class="btn btn-success" style="background: #3b4587; border: solid #3b4587; color: white" href="/donate/{{ support_challenge_id }}?charity=Buglife">Donate to Buglife</a>
-        </div>
-        <div class="tile donate_color">
-            <h3>3. Donate to a challenge:</h3>
-            <p>You can support a challenge by donating using the button on their challenge</p>
-            <a class="btn btn-info" href="/#challenges">Challenges</a>
         </div>
 
-        <div class="tile info_color" id="info">
-            <h1 class="display-4">Info</h1>
-        </div>
-        <div class="tile info_color">
-            <h3>What we are doing:</h3>
-            <p>We are celebrating the <b>75th birthday of Aldrich House</b> by raising money for our three house charities. But it is not only <b>75th</b> birthday but also <b>75</b> years since the end of the second world war and <b>75</b> years of the United Nations.</p>
-            <p>We invite you to donate to any of the challenges on this site or even create a challenge of your own.</p>
-        </div>
-        <div class="tile info_color">
-            <h3>How to participate:</h3>
-            <ol>
-                <li><b>Create a challenge</b> with a goal related to 75 e.g. bake 75 cakes</li>
-                <li>Get family, friends or anyone to <b>sponsor your challenge</b> by visiting this site and donating</li>
-            </ol>
+        <div class="section donate_color">
+            <div class="mygrid">
+                <div class="stat-element">
+                    <p>Donate:</p>
+                    <p style="font-size: 15px; color: black">Your donations will automatically be directed to help us balance donations across all of our charities.</p>
+                    <a class="btn btn-success" style="background: black; border: solid black" href="/donate/{{ support_challenge_id }}">Donate</a>
+                </div>
+                <div class="stat-element">
+                    <p>Charity:</p>
+                    <p style="font-size: 15px; color: black">If you would rather donate to a charity of your choice you can use these buttons:</p>
+                    <a class="btn btn-success" style="background: #dd7a34; border: solid #dd7a34" href="/donate/{{ support_challenge_id }}?charity=Grassroots">Grassroots</a>
+                    <a class="btn btn-success" style="background: #8dc558; border: solid #8dc558" href="/donate/{{ support_challenge_id }}?charity=Amaze">Amaze</a>
+                    <a class="btn btn-success" style="background: #3b4587; border: solid #3b4587; color: white" href="/donate/{{ support_challenge_id }}?charity=Buglife">Buglife</a>
+                </div>
+                <div class="stat-element">
+                    <p>Challenge:</p>
+                    <p style="font-size: 15px; color: black">You can support a challenge by donating using the button on their challenge.</p>
+                    <a class="btn btn-info" href="/#challenges">Challenges</a>
+                </div>
+            </div>
         </div>
 
 
-        <div class="tile charity_color" id="charities">
-            <h1 class="display-4">Charities</h1>
+        <div class="section" style="height: 60px; display: block; background: #4a5568" id="info">
+            <div>
+                <h2 class="section-title">Info</h2>
+            </div>
         </div>
 
-        <div class="tile grassroots_color" id="grassroots">
-            <h3 class="video_heading">Grassroots Suicide Prevention</h3>
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wfsuVLaZlOY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <p>Video about why we are supporting Grassroots</p>
-        </div>
-        <div class="tile grassroots_color">
-            <p style="text-align: justify">They work locally and nationally with communities, organisations and individuals, helping them to become ready, willing and able to effectively support someone at risk of suicide, experiencing a mental health problem, or someone who self-harms. Their training, signposting, and innovation helps save lives by enabling the kind of conversations that can really make a difference. They constantly work to fight the stigma that surrounds suicide/mental health difficulties and encourage help-seeking through their thriving social media community and online presence.</p>
-        </div>
-        <div class="tile grassroots_color">
-            <h3>We must act now</h3>
-            <p>Suicide is an urgent health issue – but it is preventable</p>
-            <ul>
-                <li>Today, an estimated 400 people in the UK will attempt suicide. 18 will die.</li>
-                <li>1 in 5 people think about suicide in their lifetime. 1 in 15 attempt.</li>
-                <li>On average, 1 suicide impacts 115 people’s lives, often severely and long-term.</li>
-            </ul>
-            <a href="https://www.prevent-suicide.org.uk" target="_blank" style="color: white">Read more...</a>
-        </div>
-        <div class="tile grassroots_color">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Nob3emrSiXk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <p>Video about Grassroots previous work and 2019 GSK impact award</p>
+        <div class="section info_color">
+            <div class="mygrid">
+                <div class="stat-element">
+                    <p>What we are doing:</p>
+                    <div style="font-size: 15px; color: black">
+                        <p>We are celebrating the <b>75th birthday of Aldrich House</b> by raising money for our three house charities. But it is not only <b>75th</b> birthday but also <b>75</b> years since the end of the second world war and <b>75</b> years of the United Nations.</p>
+                        <p>We invite you to donate to any of the challenges on this site or even create a challenge of your own.</p>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <p>How to participate:</p>
+                    <div style="font-size: 15px; color: black">
+                        <ol>
+                            <li><b>Create a challenge</b> with a goal related to 75 e.g. bake 75 cakes</li>
+                            <li>Get family, friends or anyone to <b>sponsor your challenge</b> by visiting this site and donating</li>
+                        </ol>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="tile amaze_color" id="amaze">
-            <h3 class="video_heading">Amaze</h3>
-        </div>
-        <div class="tile amaze_color">
-            <p style="text-align: justify">Amaze gives information, advice and support services to families of children and young people with special educational needs and disabilities in Brighton & Hove and Sussex. They provide families and young people with a voice, both in their individual casework and at a strategic level, influencing decision makers about what families need. In addition, they empower parent carers and young people by building their confidence, knowledge, skills and resilience.</p>
-            <a href="https://amazesussex.org.uk/" target="_blank" style="color: white">Read more...</a>
-        </div>
-        <div class="tile amaze_color">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/G9-pkGkN_IY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <p>Video about the work Amaze does</p>
+
+        <div class="section" style="height: 60px; display: block; background: #4a5568" id="grassroots">
+            <div>
+                <h2 class="section-title">Grassroots</h2>
+            </div>
         </div>
 
-        <div class="tile buglife_color" id="buglife">
-            <h3 class="video_heading">Buglife</h3>
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/-EXInCMAwpY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <p>Video about why we are supporting Buglife</p>
-        </div>
-        <div class="tile buglife_color">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/HKybGz5aLG4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <p>Video about Buglife's work</p>
-        </div>
-        <div class="tile buglife_color">
-            <h3>About</h3>
-            <p style="text-align: justify">Buglife is the only organisation in Europe devoted to the conservation of all invertebrates. We’re actively working to save Britain’s rarest little animals, everything from bees to beetles, worms to woodlice. There are more than 40,000 invertebrate species in the UK, and many of these are under threat as never before.</p>
-            <p>Invertebrates are vitally important to a healthy planet – humans and other life forms could not survive without them. The food we eat, the fish we catch, the birds we see, the flowers we smell and the hum of life we hear, simply would not exist without bugs. Invertebrates underpin life on earth and without them the world’s ecosystems would collapse. Invertebrates are facing an extinction crisis. </p>
-            <p>Today, thousands of invertebrate species are declining and many are heading towards extinction. Worldwide 150,000 species could be gone by 2050 if we do nothing. Each invertebrate species plays a unique and important role in the web of life, but once lost, they cannot be replaced. Many invertebrates have incredible life stories yet to be told, and we literally don’t know what we are on the brink of losing.</p>
-        </div>
-        <div class="tile buglife_color">
-            <h3>Aim</h3>
-            <p>Buglife’s aim is to halt the extinction of invertebrate species and to achieve sustainable populations of invertebrates. We are working hard to achieve this through:</p>
-            <ul>
-                <li>Promoting the environmental importance of invertebrates and raising awareness about the challenges to their survival.</li>
-                <li>Assisting in the development of legislation and policy that will ensure the conservation of invertebrates.</li>
-                <li>Developing and disseminating knowledge about how to conserve invertebrates.</li>
-                <li>Encouraging and supporting invertebrate conservation initiatives by other organisations in the UK, Europe and worldwide.</li>
-                <li>Undertaking practical conservation projects that will contribute to achieving our aim.</li>
-            </ul>
-        </div>
-        <div class="tile buglife_color">
-            <p>"Buglife is brilliant. It’s the only organisation in Europe devoted to the conservation of invertebrates – from bees to beetles, worms to woodlice. Buglife’s excellent work is a vital reminder that bugs are vitally important for a healthy planet and human survival - and it’s highly influential too, when it comes to the steps that policy makers and politicians should be taking."</p>
-            <p class="text-muted">Caroline Lucas MP</p>
-            <br>
-            <a href="https://www.buglife.org.uk/" target="_blank" style="color: white">Read more...</a>
-        </div>
-        <div class="tile buglife_color">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xlnAwHjx3zs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <p>Video about one of Buglife's past projects</p>
+        <div class="section grassroots_color">
+            <div class="mygrid">
+                <div class="stat-element">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wfsuVLaZlOY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="stat-element">
+                    <p style="text-align: justify; font-size: 15px;">They work locally and nationally with communities, organisations and individuals, helping them to become ready, willing and able to effectively support someone at risk of suicide, experiencing a mental health problem, or someone who self-harms. Their training, signposting, and innovation helps save lives by enabling the kind of conversations that can really make a difference. They constantly work to fight the stigma that surrounds suicide/mental health difficulties and encourage help-seeking through their thriving social media community and online presence.</p>
+                </div>
+                <div class="stat-element">
+                    <h3>We must act now</h3>
+                    <div style="font-size: 15px">
+                        <p>Suicide is an urgent health issue – but it is preventable</p>
+                        <ul>
+                            <li>Today, an estimated 400 people in the UK will attempt suicide. 18 will die.</li>
+                            <li>1 in 5 people think about suicide in their lifetime. 1 in 15 attempt.</li>
+                            <li>On average, 1 suicide impacts 115 people’s lives, often severely and long-term.</li>
+                        </ul>
+                        <a href="https://www.prevent-suicide.org.uk" target="_blank" style="color: white">Read more...</a>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Nob3emrSiXk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
 
-        <div style="width: 100%; height: 30px"></div>
-    </div>
+
+        <div class="section" style="height: 60px; display: block; background: #4a5568" id="amaze">
+            <div>
+                <h2 class="section-title">Amaze</h2>
+            </div>
+        </div>
+
+        <div class="section amaze_color">
+            <div class="mygrid">
+                <div class="stat-element">
+                    <p style="text-align: justify; font-size: 15px; color: black">Amaze gives information, advice and support services to families of children and young people with special educational needs and disabilities in Brighton & Hove and Sussex. They provide families and young people with a voice, both in their individual casework and at a strategic level, influencing decision makers about what families need. In addition, they empower parent carers and young people by building their confidence, knowledge, skills and resilience.</p>
+                    <a href="https://amazesussex.org.uk/" target="_blank" style="color: white; font-size: 13px">Read more...</a>
+                </div>
+                <div class="stat-element">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/G9-pkGkN_IY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section" style="height: 60px; display: block; background: #4a5568" id="buglife">
+            <div>
+                <h2 class="section-title">Buglife</h2>
+            </div>
+        </div>
+
+        <div class="section buglife_color">
+            <div class="mygrid">
+                <div class="stat-element">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/-EXInCMAwpY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="stat-element">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/HKybGz5aLG4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="stat-element">
+                    <p>About</p>
+                    <div style="font-size: 15px">
+                        <p style="text-align: justify">Buglife is the only organisation in Europe devoted to the conservation of all invertebrates. We’re actively working to save Britain’s rarest little animals, everything from bees to beetles, worms to woodlice. There are more than 40,000 invertebrate species in the UK, and many of these are under threat as never before.</p>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <div style="font-size: 15px">
+                        <p>Invertebrates are vitally important to a healthy planet – humans and other life forms could not survive without them. The food we eat, the fish we catch, the birds we see, the flowers we smell and the hum of life we hear, simply would not exist without bugs. Invertebrates underpin life on earth and without them the world’s ecosystems would collapse. Invertebrates are facing an extinction crisis. </p>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <div style="font-size: 15px">
+                        <p>Today, thousands of invertebrate species are declining and many are heading towards extinction. Worldwide 150,000 species could be gone by 2050 if we do nothing. Each invertebrate species plays a unique and important role in the web of life, but once lost, they cannot be replaced. Many invertebrates have incredible life stories yet to be told, and we literally don’t know what we are on the brink of losing.</p>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <p>Aim</p>
+                    <div style="font-size: 15px">
+                        <p>Buglife’s aim is to halt the extinction of invertebrate species and to achieve sustainable populations of invertebrates. We are working hard to achieve this through:</p>
+                        <ul>
+                            <li>Promoting the environmental importance of invertebrates and raising awareness about the challenges to their survival.</li>
+                            <li>Assisting in the development of legislation and policy that will ensure the conservation of invertebrates.</li>
+                            <li>Developing and disseminating knowledge about how to conserve invertebrates.</li>
+                            <li>Encouraging and supporting invertebrate conservation initiatives by other organisations in the UK, Europe and worldwide.</li>
+                            <li>Undertaking practical conservation projects that will contribute to achieving our aim.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <div>
+                        <p style="font-size: 15px">"Buglife is brilliant. It’s the only organisation in Europe devoted to the conservation of invertebrates – from bees to beetles, worms to woodlice. Buglife’s excellent work is a vital reminder that bugs are vitally important for a healthy planet and human survival - and it’s highly influential too, when it comes to the steps that policy makers and politicians should be taking."</p>
+                        <p style="font-size: 13px" class="text-muted">Caroline Lucas MP</p>
+                        <a href="https://www.buglife.org.uk/" target="_blank" style="color: white; font-size: 13px">Read more...</a>
+                    </div>
+                </div>
+                <div class="stat-element">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xlnAwHjx3zs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
 
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

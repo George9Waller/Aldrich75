@@ -126,15 +126,22 @@ def index():
     challenges = challenges_content + challenges_empty
 
     total = 0
+    total_weekly = 0
     met_challenges = 0
+    challenges_raising = 0
     for challenge in challenges:
         money = challenge.MoneyRaised
         if challenge.id != 1:
+            if money > 0:
+                challenges_raising += 1
             if money >= 75:
                 met_challenges += 1
 
+    week_ago = datetime.date.today() - datetime.timedelta(days=7)
     for donation in models.Donation.select():
         total += donation.Amount
+        if donation.Timestamp > datetime.datetime.combine(week_ago, datetime.time(0, 0)):
+            total_weekly += donation.Amount
 
     startdate = datetime.date(2021, 1, 4)
     enddate = datetime.date(2021, 3, 19)
@@ -158,7 +165,7 @@ def index():
     topChallenges = []
 
     try:
-        topChallenges = ordered_challenges[:5]
+        topChallenges = ordered_challenges[:6]
     except:
         pass
 
@@ -193,7 +200,8 @@ def index():
                                          days_colour=colour, days_text=days_text, authenticated=authenticated,
                                          challenges=challenges, progress=progress, topChallenges=topChallenges,
                                          my_challenges=my_challenges, support_challenge_id=support_challenge.id,
-                                         popup=popup, make_challenge=make_challenge, donations=donations))
+                                         popup=popup, make_challenge=make_challenge, donations=donations,
+                                         total_weekly=total_weekly, challenges_raising=challenges_raising))
 
     if not popup:
         resp.set_cookie('first', 'True', max_age=15552000)
@@ -348,7 +356,7 @@ def donated():
         message_string = models.TempMessage.select(models.TempMessage.Message).where(models.TempMessage.id == int(message))
 
         try:
-            models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message_string)
+            donation = models.Donation.create(Challenge=challenge, Amount=amount, Charity=charity, message=message_string)
         except:
             flash('There was an error recording your donation, please email aldrichhouse75@gmail.com', 'error')
             return redirect(url_for('index'))
@@ -356,6 +364,18 @@ def donated():
         challenge.update_money_raised_by(amount)
 
         flash('Your donation of £{} to {} has been successfully recorded'.format(amount, charity), 'success')
+
+        try:
+            participant = models.Participant.get().where(models.Participant.id == 1)
+            msg = Message('New Donations', sender='"Aldrich 75 <aldrichhouse75@gmail.com>"',
+                          recipients=['george.waller3@gmail.com'])
+            message = "A donation of {} has been given to {}. Message: {}".format(donation.Amount, donation.Charity, donation.message)
+            msg.html = render_template('emails/default_bulk.html', participant=participant,
+                                       title='New Donation', message=message, bulk=False)
+            mail.send(msg)
+        except:
+            pass
+
         return redirect(url_for('index'))
 
     except:
@@ -477,7 +497,7 @@ def logout():
 
 @app.route('/donation-options')
 def donation_options():
-    return render_template('donation_options.html', support_challenge_id=1)
+    return redirect(url_for('about'))
 
 
 @app.route('/unsubscribe/<int:ParticipantID>')
@@ -519,18 +539,16 @@ if __name__:
 
     # models.Donation.delete().where(models.Donation.message == 'Test Message').execute()
 
-    try:
-        task_time = datetime.datetime(2020, 11, 27, 8, 40, 0, 0)
-        print(task_time)
-        task = models.BulkEmailTask.create(Task_Name='Welcome Aldrich', Task_Message='message', DateTime=task_time, Template='emails/welcome_email.html', Done=False)
-        print('created email task')
-    except:
-        pass
+    """Email Task"""
+    # try:
+    #     task_time = datetime.datetime(2020, 11, 27, 8, 40, 0, 0)
+    #     print(task_time)
+    #     task = models.BulkEmailTask.create(Task_Name='Welcome Aldrich', Task_Message='message', DateTime=task_time, Template='emails/welcome_email.html', Done=False)
+    #     print('created email task')
+    # except:
+    #     pass
 
-    # models.Participant.update({models.Participant.Name: 'Miss\tT-W'}).where(models.Participant.id == 1199).execute()
-    # models.Participant.update({models.Participant.Name: 'Miss\tWilkins'}).where(models.Participant.id == 877).execute()
-    # models.Participant.update({models.Participant.Name: 'Mrs\tWalker'}).where(models.Participant.id == 876).execute()
-    # models.Participant.update({models.Participant.Name: 'Mr\tWebster'}).where(models.Participant.id == 905).execute()
+    # models.Participant.update({models.Participant.Name: 'Gareth\t&\tKath\tEvans'}).where(models.Participant.id == 1215).execute()
 
     # Bulk Email scheduler
     # scheduler = BackgroundScheduler()
@@ -539,6 +557,6 @@ if __name__:
     # print('started scheduler')
 
     """check emails on program start"""
-    bulk_email_checker()
+    # bulk_email_checker()
     #
     # atexit.register(lambda: scheduler.shutdown())
