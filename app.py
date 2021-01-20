@@ -158,8 +158,6 @@ def index():
         days = future - today
         colour = '##659D32'
 
-    progress = int((total / 7500) * 100)
-
     ordered_challenges = models.Challenge.select().where(models.Challenge.id != 1)\
         .order_by(models.Challenge.MoneyRaised.desc())
     topChallenges = []
@@ -195,6 +193,11 @@ def index():
     print(make_challenge)
 
     donations = models.Donation.select().order_by(models.Donation.Timestamp.desc())
+
+    # Assuming 75% of donations have gift aid
+    total = float(total) + ((0.75 * float(total)) * 0.25)
+    total_weekly = float(total_weekly) + ((0.75 * float(total_weekly)) * 0.25)
+    progress = int((total / 7500) * 100)
 
     resp = make_response(render_template('index.html', total=total, met_challenges=met_challenges, days=days.days,
                                          days_colour=colour, days_text=days_text, authenticated=authenticated,
