@@ -93,6 +93,7 @@ body {
 }
 
 .stat-element {
+    position: relative;
     width: 250px;
     padding: 20px;
     margin: 20px;
