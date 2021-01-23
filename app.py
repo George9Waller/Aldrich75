@@ -551,7 +551,7 @@ if __name__:
     # except:
     #     pass
 
-    # models.Participant.update({models.Participant.Name: 'Gareth\t&\tKath\tEvans'}).where(models.Participant.id == 1215).execute()
+    # models.Participant.update({models.Participant.Name: 'Mr\tTomlin'}).where(models.Participant.id == 1236).execute()
 
     # Bulk Email scheduler
     # scheduler = BackgroundScheduler()
