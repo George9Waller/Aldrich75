@@ -8,7 +8,6 @@ import hashlib
 import peewee
 from peewee import fn
 import jinja2
-from flask_sslify import SSLify
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, make_response, flash, url_for, redirect
@@ -18,7 +17,6 @@ import forms
 # import users
 
 app = Flask(__name__)
-sslify = SSLify(app)
 
 try:
     import environment
@@ -109,6 +107,11 @@ def get_participant_from_hash():
         if hashlib.sha224(str(iter_participant.id).encode('utf-8')).hexdigest() == request.cookies.get('ParticipantID'):
             return iter_participant
     return None
+
+
+@app.route('/robots.txt')
+def robots():
+    return make_response(render_template('robots.txt'))
 
 
 @app.route('/')
