@@ -109,6 +109,11 @@ def get_participant_from_hash():
     return None
 
 
+@app.route('/robots.txt')
+def robots():
+    return make_response(render_template('robots.txt'))
+
+
 @app.route('/')
 def index():
     # if request.cookies.get('first') is None:
